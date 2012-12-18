@@ -1,0 +1,18 @@
+Credits for mGallery2 Module
+----------------------------
+
+Moved to Cozi and adopted by:
+Philipp ( ph )
+Mateo Tibaquirá ( mateo )
+
+Module originally written by Michaael Bhola ( thaughbaer )
+
+Bug fixes and German language files by Carsten Volmer ( Herr Vorragend )
+
+New features by Johnny Birchett:
+- modified the block to add image block params
+- added settings to the module admin to set defaults for the block
+- added a transform hook to enable bb_code-like tags in modules to insert gallery images
+  The transform hook is based on drupal's gallery_filter by MichelleC ( http://drupal.org/user/23570 )
+- Added image frames selection dialogs in block and module admin
+- Added image frames sample url in blocks and module admin

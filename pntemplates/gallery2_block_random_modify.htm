@@ -1,0 +1,89 @@
+<!--[* $Id: gallery2_block_random_modify.htm 83 2009-08-19 06:11:07Z ph $ *]-->
+
+<tr>
+	<td>
+		<label for="mg2_albumlist"><!--[pnml name='_MG2ALBUMLIST']--></label>
+	</td>
+	<td>
+		<select id="mg2_albumlist" name="albumId">
+			<!--[html_options options=$albumlist selected=$albumId]-->
+		</select>
+	</td>
+</tr>
+<tr>
+	<td>
+		<label for="mg2_showTitle"><!--[pnml name='_MG2SHOWTITLE']--></label>
+	</td>
+	<td>
+		<label for="showTitle_yes"><!--[pnml name='_YES']--></label><input id="showTitle_yes" name="showTitle" type="radio" value="1"<!--[if $showTitle eq 1]--> checked="checked"<!--[/if]--> />
+		<label for="showTitle_no"><!--[pnml name='_NO']--></label><input id="showTitle_no" name="showTitle" type="radio" value="0"<!--[if $showTitle neq 1]--> checked="checked"<!--[/if]--> />
+	</td>
+</tr>
+<tr>
+	<td>
+		<label for="mg2_showOwner"><!--[pnml name='_MG2SHOWOWNER']--></label>
+	</td>
+	<td>
+		<label for="showOwner_yes"><!--[pnml name='_YES']--></label><input id="showOwner_yes" name="showOwner" type="radio" value="1"<!--[if $showOwner eq 1]--> checked="checked"<!--[/if]--> />
+		<label for="showOwner_no"><!--[pnml name='_NO']--></label><input id="showOwner_no" name="showOwner" type="radio" value="0"<!--[if $showOwner neq 1]--> checked="checked"<!--[/if]--> />
+	</td>
+</tr>
+<tr>
+	<td>
+		<label for="mg2_showViews"><!--[pnml name='_MG2SHOWVIEWS']--></label>
+	</td>
+	<td>
+		<label for="showViews_yes"><!--[pnml name='_YES']--></label><input id="showViews_yes" name="showViews" type="radio" value="1"<!--[if $showViews eq 1]--> checked="checked"<!--[/if]--> />
+		<label for="showViews_no"><!--[pnml name='_NO']--></label><input id="showViews_no" name="showViews" type="radio" value="0"<!--[if $showViews neq 1]--> checked="checked"<!--[/if]--> />
+	</td>
+</tr>
+<tr>
+	<td>
+		<label for="mg2_showDate"><!--[pnml name='_MG2SHOWDATE']--></label>
+	</td>
+	<td>
+		<label for="showDate_yes"><!--[pnml name='_YES']--></label><input id="showDate_yes" name="showDate" type="radio" value="1"<!--[if $showDate eq 1]--> checked="checked"<!--[/if]--> />
+		<label for="showDate_no"><!--[pnml name='_NO']--></label><input id="showDate_no" name="showDate" type="radio" value="0"<!--[if $showDate neq 1]--> checked="checked"<!--[/if]--> />
+	</td>
+</tr>
+<tr>
+	<td>
+		<label for="mg2_numImages"><!--[pnml name='_MG2NUMIMAGES']--></label>
+	</td>
+	<td>
+		<input id="mg2_numImages" type="text" name="numImages" value="<!--[$numImages|pnvarprephtmldisplay]-->" size="5" maxlength="5" />
+	</td>
+</tr>
+<tr>
+	<td>
+		<label for="mg2_Size"><!--[pnml name='_MG2SIZE']--></label>
+	</td>
+	<td>
+        <select id="mg2_sizeType" name="sizeType">
+            <!--[html_options options=$sizeTypes selected=$sizeType]-->
+        </select>
+		<input id="mg2_Size" type="text" name="Size" value="<!--[$Size|pnvarprephtmldisplay]-->" size="5" maxlength="5" />
+	</td>
+</tr>
+<!--[if $frames]-->		
+<tr>
+	<td>
+		<label for="gallery2_albumframe"><!--[pnml name='_MG2ALBUMFRAME']--></label>
+	</td>
+	<td>
+		<select id="gallery2_albumframe" name="albumFrame">
+			<!--[html_options options=$frames selected=$albumFrame]-->
+		</select>
+	</td>
+</tr>
+<tr>
+	<td>
+		<label for="gallery2_itemframe"><!--[pnml name='_MG2ITEMFRAME']--></label>
+	</td>
+	<td>
+		<select id="gallery2_itemframe" name="itemFrame">
+			<!--[html_options options=$frames selected=$itemFrame]-->
+		</select>
+	</td>
+</tr>
+<!--[/if]-->

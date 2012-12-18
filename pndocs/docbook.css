@@ -1,0 +1,374 @@
+@page
+{
+  size: 21cm 30cm;
+}
+
+
+body
+{
+  margin-left: 80px;
+  margin-right: 40px;
+  font-size: 11pt;
+  font-family: Palatino, Georgia, "Times Roman", serif;
+}
+
+@media print
+{
+  body
+  {
+    margin-left: 3cm;
+    margin-right: 2cm;
+  }
+
+  h1
+  {
+    font-family: Arial, sans-serif;
+    font-size: 40pt;
+    font-weight: bold;
+    margin-top: 5cm;
+    margin-bottom: 6pt;
+  }
+
+  div.part h1
+  {
+    page-break-before: always;
+  }
+
+  div.figure
+  {
+    page-break-inside: avoid;
+    border: 1px solid #A0A0A0;
+    margin: 0px 0px 2ex -2cm;
+  }
+
+  div.informalfigure
+  {
+    margin: 0px 0px 2ex -2cm;
+    padding: 0px 0.5cm 0px 0.5cm;
+  }
+}
+
+@media screen
+{
+  h1
+  {
+    font-family: Arial, sans-serif;
+    font-size: 40pt;
+    font-weight: bold;
+    margin-bottom: 6pt;
+  }
+}
+
+div.chapter h2
+{
+  page-break-before: always;
+  font-family: Arial, sans-serif;
+  font-size: 24pt;
+  margin-top: 40pt;
+  margin-bottom: 6pt;
+  border-bottom: 2px solid black;
+}
+
+div.section h2
+{
+  page-break-before: auto;
+  font-family: Arial, sans-serif;
+  font-size: 14pt;
+  margin-top: 30pt;
+  margin-bottom: 0pt;
+  border: none;
+}
+
+h3
+{
+  font-family: Arial, sans-serif;
+  font-size: 11pt;
+  margin-top: 20pt;
+  margin-bottom: 0pt;
+}
+
+h4.margin
+{
+  margin-left: -15mm; /* Use mm instead of pt since margin is expected to be 20 mm */
+  font-weight: normal;
+  font-style: italic;
+}
+
+div.abstract
+{
+  page-break-after: always;
+}
+
+div.referenceTitle
+{
+  font-family: Arial, sans-serif;
+  font-size: 11pt;
+}
+
+div.toc
+{
+  page-break-after: always;
+}
+
+div.toc dt
+{
+  margin-top: 1ex;
+  xborder:1px solid red;
+}
+
+div.toc dl dl dt
+{
+  margin-top: 2px;
+  margin-bottom: 0px;
+}
+
+div.toc dl dd
+{
+  margin-bottom: 0px;
+  margin-left: 1em;
+}
+
+div.table,
+div.informaltable
+{
+  margin-bottom: 1ex;
+}
+
+div.caution,
+div.note,
+div.important,
+div.tip
+{
+  border-top: 1px solid gray;
+  border-left: 1px solid gray;
+  border-bottom: 3px solid black;
+  border-right: 3px solid black;
+  margin: 12pt 6pt;
+  padding: 6pt;
+}
+
+div.caution h3,
+div.note h3,
+div.important h3
+{
+  margin-top: 4px;
+}
+
+@media screen
+{
+  div.figure
+  {
+    border: 1px solid #A0A0A0;
+    margin-bottom: 2ex;
+  }
+
+  div.informalfigure
+  {
+    margin: 0px 0px 2ex 0px;
+    padding: 0px 0.5cm 0px 0.5cm;
+  }
+}
+
+img
+{
+  border: none;
+}
+
+a.note
+{
+  font-size: 8pt;
+  vertical-align: top;
+  text-decoration: none;
+}
+
+div.img
+{
+  border-top: 1px solid gray;
+  border-left: 1px solid gray;
+  border-bottom: 3px solid black;
+  border-right: 3px solid black;
+  margin: 12pt 6pt;
+  padding: 6pt;
+}
+
+div.img3
+{
+  border: none;
+  margin: 0pt 6pt;
+  padding: 6pt;
+  float: right;
+  width: 33%;
+}
+
+div.img3 img
+{
+  border-top: 1px solid gray;
+  border-left: 1px solid gray;
+  border-bottom: 3px solid black;
+  border-right: 3px solid black;
+}
+
+p.imgText
+{
+  margin-top: 0;
+  font-style: italic;
+}
+
+p
+{
+  margin-top: 0;
+}
+
+span.filename
+{
+  font-family: Courier, monospace;
+  font-size: 11pt;
+}
+
+span.markup
+{
+  font-family: Courier, monospace;
+  font-size: 11pt;
+}
+
+pre.programListing
+{
+  margin-left: 1em;
+  margin-top: 1.5ex;
+  margin-bottom: 1.5ex;
+  padding: 1.5ex;
+  border: 1px dotted black;
+  background-color: #E0E0E0;
+  clear: right;
+}
+
+pre
+{
+  margin: 0px 0px 1ex 2em;
+}
+
+div.indent
+{
+  margin-left: 1em;
+  margin-top: 1ex;
+  margin-bottom: 1ex;
+  padding: 1.5ex;
+}
+
+
+dl
+{
+  margin-left: 10pt;
+}
+
+dt
+{
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 9pt;
+  background-image: url("bullet_right.gif");
+  background-repeat: no-repeat;
+  background-position: center left;
+  padding-left: 14px;
+}
+
+dt a
+{
+  text-decoration: none;
+}
+
+dd
+{
+  margin-left: 2em;
+  margin-bottom: 10pt;
+}
+
+dl.objectDescription dt
+{
+  padding-left: 0px;
+  background-image: none;
+}
+
+dl.objectDescription dd
+{
+}
+
+
+dl.marginText
+{
+  margin-left: 0pt;
+}
+
+dl.marginText dt
+{
+  font-family: Arial, sans-serif;
+  font-weight: normal;
+  font-style: italic;
+  font-size: 9pt;
+  margin-left: -15mm; /* Use mm instead of pt since margin is expected to be 20 mm */
+  padding-left: 0pt;
+  background-image: none;
+}
+
+dl.marginText dd
+{
+  margin-left: 10pt;
+  margin-bottom: 10pt;
+}
+
+
+li
+{
+  margin-top: 2pt;
+}
+
+th, td
+{
+  font-size: 11pt;
+}
+
+table.permissions,
+table.options
+{
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+}
+
+table.permissions td,
+table.permissions th
+{
+  border: 1px solid gray;
+  padding: 4px 6px;
+}
+
+
+table.options th,
+table.options td
+{
+  text-align: center;
+  vertical-align: top;
+  padding: 2px 8px;
+}
+
+table.options th.descr,
+table.options td.descr
+{
+  text-align: left;
+}
+
+
+table.attributes
+{
+  margin-top: 5px;
+  border: none;
+}
+
+table.attributes th,
+table.attributes td
+{
+  text-align: left;
+  vertical-align: top;
+  padding: 2px 8px;
+}
+

@@ -1,0 +1,1756 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<book lang="en-US">
+  <title>mGallery 0.2 - Postnuke bridge module</title>
+
+  <bookinfo>
+    <date>2007-05-01</date>
+
+    <authorgroup>
+      <author>
+        <surname>Birchett</surname>
+
+        <firstname>Johnny</firstname>
+      </author>
+    </authorgroup>
+
+    <abstract>
+      <para>This manual documents how the the menalto Gallery2 bridge for
+      PostNuke works. mGallery2 is a utility module that embeds the Gallery2
+      web application into Postnuke</para>
+    </abstract>
+
+    <copyright>
+      <year>2007</year>
+
+      <holder>mGallery2 Development Team</holder>
+    </copyright>
+
+    <releaseinfo>Version .2-1</releaseinfo>
+
+    <date>$Date: 2008-02-03 08:24:58 -0500 (dom, 03 feb 2008) $</date>
+
+    <legalnotice>
+      <para>Permission is granted to copy, distribute and/or modify this
+      document under the terms of the GNU Free Documentation License, Version
+      1.2 or any later version published by the Free Software Foundation, with
+      no Invariant Sections, no Front-Cover Texts and no Back-Cover Texts. A
+      copy of the license can be obtained from the <ulink
+      url="http://www.gnu.org/licenses/fdl.txt">Free Software
+      foundation</ulink></para>
+    </legalnotice>
+
+    <keywordset>
+      <keyword>mGallery</keyword>
+
+      <keyword>PostNuke</keyword>
+
+      <keyword>Menalto</keyword>
+
+      <keyword>gallery</keyword>
+
+      <keyword>g2</keyword>
+    </keywordset>
+  </bookinfo>
+
+  <chapter id="ch1-install">
+    <title>Installation</title>
+
+    <section id="reqs">
+      <title>Requirements</title>
+
+      <para>To install mGallery2 version .02, you must be running the
+      following:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>PostNuke .764</emphasis> - Download it at <ulink
+          url="http://www.postnuke.com/">http://www.postnuke.com/</ulink></para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Gallery2 2.1.2</emphasis> (or higher) installed and
+          working - Download at <ulink
+          url="???">http://gallery.menalto.com</ulink></para>
+        </listitem>
+
+        <listitem>
+          <para>Image Block module installed and activated in Gallery2</para>
+        </listitem>
+
+        <listitem>
+          <para>Image Frame module installed and activated in Gallery2</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>You may find that it works with earlier versions but if you want
+      support it will be difficult for me to debug. We are currently working
+      on updates to make it compatible with Postnuke .8</para>
+    </section>
+
+    <section id="g2inst">
+      <title>Install Gallery2</title>
+
+      <para>Use the gallery documentation to install Gallery2 standalone on
+      your web site. Gallery can be installed anywhere on your website. Just
+      make a note of the base directory - the physical location of the gallery
+      files - and the URI of the Gallery2 web site - it's path from the web
+      root.</para>
+
+      <para>For instance, on a UNIX system, if your web site's root is located
+      at <filename>/home/apache/htdocs</filename> and you install the Gallery2
+      files in <filename>/home/apache/htdocs/gallery2</filename>, your base
+      directory would be <filename>/home/apache/htdocs/gallery2</filename> and
+      your Gallery2 URI would be <filename>/gallery2</filename>. The same
+      applies on a Windows system. If your web root is located at
+      <filename>d:\webroot\</filename> and you install Gallery2 files in
+      <filename>d:\webroot\gallery2</filename>, your base directory is
+      <filename>d:\webroot\gallery2</filename> and your Gallery2 URI is
+      <filename>/gallery2</filename>.</para>
+
+      <para>Once Gallery2 is installed, go into the site administration and
+      click on the modules link in the sidebar. Look in the Blocks section of
+      the modules admin and make sure the Image Block plugin is installed and
+      active. Look in the Display section of the modules admin and make sure
+      the ImageFrame module is installed and active.</para>
+
+      <section id="doubleDoubleNotes">
+        <title>Gallery2 2.2.1 (Double-Double) Notes</title>
+
+        <para>Gallery 2.2.1 incorporates the Smarty templating engine and has
+        several places in the code where it explicitly calls its own plugins.
+        This causes some problems with Postnuke's own Smarty engine, so
+        running Gallery 2.2.1 will require some code editing.</para>
+
+        <section id="albumselect">
+          <title>albumselect module</title>
+
+          <para>To correct the album select module's Smarty overlap, do the
+          following:</para>
+
+          <orderedlist>
+            <listitem>
+              <para>In your Gallery2 installation folder, navigate to the
+              <filename>modules/albumselect</filename> folder</para>
+            </listitem>
+
+            <listitem>
+              <para>Open the <filename>Callbacks.inc</filename> file in an
+              editor. Save a copy of the file for safety</para>
+            </listitem>
+
+            <listitem>
+              <para>Go to line 136, which should read:</para>
+
+              <programlisting format="linespecific">GalleryCoreApi::requireOnce('lib/smarty/plugins/modifier.escape.php');</programlisting>
+            </listitem>
+
+            <listitem>
+              <para>Add a line before this line that reads:</para>
+
+              <programlisting>if(!function_exists("smarty_modifier_escape")) {</programlisting>
+            </listitem>
+
+            <listitem>
+              <para>Add a line after 136 that reads:</para>
+
+              <programlisting>}</programlisting>
+            </listitem>
+
+            <listitem>
+              <para>Save and exit the file</para>
+            </listitem>
+          </orderedlist>
+        </section>
+
+        <section id="galleryTemplateAdapter">
+          <title>GalleryTemplateAdapter</title>
+
+          <para>To correct the album select module's Smarty overlap, do the
+          following:</para>
+
+          <orderedlist>
+            <listitem>
+              <para>In your Gallery2 installation folder, navigate to the
+              <filename>modules/core/classes</filename> folder</para>
+            </listitem>
+
+            <listitem>
+              <para>Open the <filename>GalleryTemplateAdapter.class</filename>
+              file in an editor. Save a copy of the file for safety.</para>
+            </listitem>
+
+            <listitem>
+              <para>Go to line 241, which should read:</para>
+
+              <programlisting>GalleryCoreApi::requireOnce('lib/smarty/plugins/modifier.escape.php');</programlisting>
+            </listitem>
+
+            <listitem>
+              <para>Add a line before this line that reads:</para>
+
+              <programlisting>if(!function_exists("smarty_modifier_escape")) {</programlisting>
+            </listitem>
+
+            <listitem>
+              <para>Add a line after 241 that reads:</para>
+
+              <programlisting>}</programlisting>
+            </listitem>
+
+            <listitem>
+              <para>Go to line 726, which should read:</para>
+
+              <programlisting>GalleryCoreApi::requireOnce('lib/smarty/plugins/function.debug.php');</programlisting>
+            </listitem>
+
+            <listitem>
+              <para>Add a line before this line that reads:</para>
+
+              <programlisting>if(!function_exists("smarty_function_debug")) {</programlisting>
+            </listitem>
+
+            <listitem>
+              <para>Add a line after 726 that reads:</para>
+
+              <programlisting>}</programlisting>
+            </listitem>
+
+            <listitem>
+              <para>Go to line 1014, which should read:</para>
+
+              <programlisting>GalleryCoreApi::requireOnce('lib/smarty/plugins/modifier.escape.php');</programlisting>
+            </listitem>
+
+            <listitem>
+              <para>Add a line after this line that reads:</para>
+
+              <programlisting>if(!function_exists("smarty_modifier_escape")) {</programlisting>
+            </listitem>
+
+            <listitem>
+              <para>Add a line after 1014 that reads:</para>
+
+              <programlisting>}</programlisting>
+            </listitem>
+
+            <listitem>
+              <para>Save and exit the file</para>
+            </listitem>
+          </orderedlist>
+        </section>
+
+        <section id="doubleValidate">
+          <title>Validate Changes</title>
+
+          <para>Open your Gallery to make sure it still works. If it doesn't
+          restore the two files and try again. If it still doesn't work, ask
+          around on the mGallery2 forums.</para>
+        </section>
+      </section>
+    </section>
+
+    <section id="mg2Install">
+      <title>Installing mGallery2</title>
+
+      <para>This section will describe how to install the module into your
+      Postnuke site. It will also cover adding the module to the standard
+      Postnuke menu and how to set up user and Group synchronization.</para>
+
+      <section id="mg2inst">
+        <title>Install the module</title>
+
+        <para>The mGallery2 package consists of the module files, located in
+        the mGallery2 folder, and two core Postnuke files for PN764, one
+        located in the <filename>User/</filename> folder and the other in the
+        <filename>Groups/</filename> folder. To perform the mGallery2
+        install:</para>
+
+        <orderedlist>
+          <listitem>
+            <para>Copy the <filename>mGallery2</filename> folder into your
+            Postnuke <filename>modules/</filename> folder</para>
+          </listitem>
+
+          <listitem>
+            <para>Go to your Postnuke Administration Panel</para>
+          </listitem>
+
+          <listitem>
+            <para>Click on the system tab</para>
+          </listitem>
+
+          <listitem>
+            <para>Click on modules</para>
+          </listitem>
+
+          <listitem>
+            <para>Make sure All is selected in the drop-down list beside the
+            alphabetical filter menu links</para>
+          </listitem>
+
+          <listitem>
+            <para>Click on the Regenerate link in the administration
+            links</para>
+          </listitem>
+
+          <listitem>
+            <para>After Postnuke regenerates the modules, find mGallery2 in
+            the list</para>
+
+            <tip>
+              <para>Click on the M link above the modules table to make it
+              easier to find. It should have a status of Uninitialized)</para>
+            </tip>
+          </listitem>
+
+          <listitem>
+            <para>Click on Initialize in the module's actions</para>
+          </listitem>
+
+          <listitem>
+            <para>The status of the module should now be Inactive</para>
+          </listitem>
+
+          <listitem>
+            <para>Click on Activate in the module's actions</para>
+          </listitem>
+        </orderedlist>
+
+        <para>The module should now be installed.</para>
+      </section>
+
+      <section id="cfgMg2">
+        <title>Configuring the module</title>
+
+        <para>Now that the module is installed, it will need to be configured
+        in order to access your installed Gallery2. This is where you will use
+        the Base Directory and Gallery2 URI that you noted during Gallery2
+        installation. To configure the module, click on the Admin link in the
+        module's actions or click on the 3rd Party tab in your Postnuke Admin
+        Panel and click the mGallery2 icon.</para>
+
+        <graphic align="left" fileref="images/mg2-icon.jpg" format="JPG"
+                 id="mg2icon" />
+
+        <para>There are two sections in the module's administration panel. The
+        first section, Main Module Configuration, sets up the parameters for
+        communicating with Gallery2. The screenshot below shows this section.
+        You will notice that there are two lines in red. Before the module is
+        configured, they will say that modules are disabled in the Gallery2
+        core, but they ar inaccurate until the module is set up properly. Here
+        is the screenshot:</para>
+
+        <figure>
+          <title>Main Module Configuration</title>
+
+          <graphic fileref="images/main-config-blank.jpg" format="JPG"
+                   id="mg2mainConfigBlank" srccredit="Johnny Birchett, 2007" />
+        </figure>
+
+        <para>The first field is Base Directory, which is the physical path to
+        the Gallery2 installation files. This is the path from the root of the
+        filesystem. On a UNIX machine, it might be something like
+        <filename>/webroot/htdocs/gallery2</filename>. On a Windows machine,
+        it might be something like
+        <filename>d:\webroot\gallery2</filename>.The second field is Gallery2
+        URI, which is the path from the web root to the Gallery2 files. Here's
+        an example. The web root is where your web server looks for documents.
+        Let's say you installed Postnuke into a folder called c:\web\postnuke
+        or /web/postnuke and you set your web root to this folder in apache.
+        You access your Postnuke site at this URI: <filename>/</filename>.
+        Now, let's say you install gallery2 into a folder called
+        <filename>c:\web\postnuke\g2\ or /web/postnuke/g2/</filename> within
+        the Postnuke folder. The URI for Gallery2 would be
+        <filename>/g2</filename>. Let's say, on the other hand, that you
+        installed Gallery2 into a different folder altogether, like
+        d:\gallery2 or <filename>/apps/gallery2</filename>. In apache, you set
+        this folder up to map to <filename>/Gallery2</filename>. Now your URI
+        is <filename>/Gallery2</filename>.</para>
+
+        <para>Once you have these two fields set up correctly, click on the
+        <emphasis>Update</emphasis> button at the bottom of the screen. If you
+        have set Gallery up correctly, when the screen refreshes, the module
+        status lines should both be in green as in the screenshot
+        below:</para>
+
+        <graphic fileref="images/main-config-green.jpg" format="JPG"
+                 id="mg2mainConfigGreen" />
+
+        <para>If these lines are still red, it means you have either forgotten
+        to install and activate the modules in Gallery2 or you have an
+        incorrect Base directory, Gallery URI, or both. The mGallery2 module
+        will still work without the two Gallery2 modules, but frames will not
+        be available. mGallery2 will not work without a correct Base Directory
+        and Gallery URI. The second section in the main module administration
+        is the default parameters for the transform hook. The settings look
+        like this.</para>
+
+        <graphic fileref="images/admin-screen-transform.jpg" format="JPG"
+                 id="mg2adminScreenTransform" />
+
+        <para>These settings will take affect when no options are used in a
+        transform hook tag. You can choose to show the title of the photo, the
+        owner of the photo, the date of the photo (from EXIF data), or the
+        number of views from within Gallery2. You can also choose to show the
+        default full-sized image instead of a thumbnail and you can set the
+        maximum size of the full-sized image or the thumbnail. The two
+        dropdown boxes determine what frame will be used by default on albums
+        and images. The link underneath the settings navigates to a contact
+        sheet with all of the available frames displayed on a photo. All of
+        these options are explained in more detail in the section <xref
+        endterm="xformHook.title.link" linkend="xformHook.link" />.</para>
+      </section>
+
+      <section id="mg2menu">
+        <title>Adding mGallery2 to your Postnuke menu</title>
+
+        <para>The standard Postnuke installation comes with a side block menu.
+        It can be accessed in the Postnuke administration panel under
+        Blocks/Main Menu. It's easy to add a link to your gallery in the
+        Postnuke menu block. Follow these steps to do it:</para>
+
+        <orderedlist>
+          <listitem>
+            <para>Go to your Postnuke Administration Panel</para>
+          </listitem>
+
+          <listitem>
+            <para>Click on the System tab if you're not there already</para>
+          </listitem>
+
+          <listitem>
+            <para>Click on the Blocks icon</para>
+          </listitem>
+
+          <listitem>
+            <para>Look for the Main Menu block and click on its Edit
+            option</para>
+          </listitem>
+
+          <listitem>
+            <para>In the Content section, look for or create an empty
+            line</para>
+
+            <tip>
+              <para>If you want it to appear after a specific item, check the
+              "Insert blank after" check box for that item. Click the Update
+              button. Edit the Main Menu again. You should see a new blank
+              line where you wanted it.</para>
+            </tip>
+          </listitem>
+
+          <listitem>
+            <para>Type anything you want in the Title and Description
+            fields</para>
+          </listitem>
+
+          <listitem>
+            <para>In the URL field, type {mGallery2}</para>
+
+            <note>
+              <para>This tells Postnuke to create a URL to the mGallery2
+              module</para>
+            </note>
+          </listitem>
+
+          <listitem>
+            <para>Click the Update button</para>
+          </listitem>
+
+          <listitem>
+            <para>You should now see your gallery link in the menu. Click it
+            to test.</para>
+          </listitem>
+        </orderedlist>
+
+        <para>If you want to create links to specific albums, just go to your
+        gallery and click on the album. When you have the desired album in the
+        browser, copy the URL from the browser's navigation bar and paste it
+        into the menu item's URL field instead of {mGallery2}.</para>
+      </section>
+
+      <section id="userGroupSync">
+        <title>User and Group Synchronization</title>
+
+        <para>mGallery2 can synchronize users and groups between Postnuke and
+        Gallery2 in several ways. The first time a logged-in user clicks on
+        your Gallery2 link, a new user will be created in Gallery2 and mapped
+        to that Postnuke userid. If you want all of your users to have
+        Gallery2 userid mappings, you can do it manually through the module's
+        administration menu or you can set up automatic user and group
+        synchronization. If you want to get user automatic synchronization
+        working, you must modify two core Postnuke files to enable the
+        mGallery hooks to work correctly. To do so:</para>
+
+        <orderedlist>
+          <listitem>
+            <para>Make a copy of the core file
+            <filename>modules/User/admin.php</filename></para>
+          </listitem>
+
+          <listitem>
+            <para>Copy <filename>User/admin.php</filename> into
+            <filename>modules/User</filename></para>
+          </listitem>
+
+          <listitem>
+            <para>Make a copy of the core file
+            <filename>modules/Groups/pnadminapi.php</filename></para>
+          </listitem>
+
+          <listitem>
+            <para>Copy <filename>Groups/pnadminapi.php</filename> into
+            <filename>modules/Groups</filename></para>
+          </listitem>
+
+          <listitem>
+            <para>Go to your Postnuke Administration Panel</para>
+          </listitem>
+
+          <listitem>
+            <para>Click on the system tab if you're not there already</para>
+          </listitem>
+
+          <listitem>
+            <para>Click on the Modules icon</para>
+          </listitem>
+
+          <listitem>
+            <para>Find the User module</para>
+
+            <tip>
+              <para>Click on the U link above the modules table to make it
+              easier to find</para>
+            </tip>
+          </listitem>
+
+          <listitem>
+            <para>Click on the Hooks action for the module</para>
+          </listitem>
+
+          <listitem>
+            <para>Check the checkbox next to <emphasis>Activate mgallery2 for
+            this module</emphasis></para>
+          </listitem>
+
+          <listitem>
+            <para>Click the <emphasis>Update</emphasis> button</para>
+          </listitem>
+
+          <listitem>
+            <para>Find the Groups module</para>
+
+            <tip>
+              <para>Click on the G link above the modules table to make it
+              easier to find</para>
+            </tip>
+          </listitem>
+
+          <listitem>
+            <para>Click on the Hooks action for the module</para>
+          </listitem>
+
+          <listitem>
+            <para>Check the checkbox next to <emphasis>Activate mgallery2 for
+            this module</emphasis></para>
+          </listitem>
+
+          <listitem>
+            <para>Click the <emphasis>Update</emphasis> button</para>
+          </listitem>
+        </orderedlist>
+
+        <para>For small sites, automatic synchronization isn't necessary as
+        users will be created when they enter the gallery, but for large or
+        high-traffic sites, on-the-fly creation could cause some overhead.
+        Automatic synchronization creates and deletes the user or group using
+        hooks on the appropriate module, so the changes happen in Gallery2 at
+        the same time the changes happen in Postnuke.</para>
+
+        <note>
+          <para>From thaughbear - The user/group synchronization uses PostNuke
+          as the master and G2 as the slave. It works exactly as I want it to
+          work. My PostNuke and Gallery2 users are both called Admin and these
+          are the only admin users. If you want it to work any other way
+          submit a feature request which I may or may not implement.</para>
+        </note>
+      </section>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>mGallery2 Blocks</title>
+
+    <para>There are three types of blocks in mGallery2. Two of them are used
+    to display images and one is used to move the Gallery2 sidebar out of the
+    embedded gallery and into Postnuke's block system. The block names
+    are:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>mGallery2/Random - Show a random image</para>
+      </listitem>
+
+      <listitem>
+        <para>mGallery2/Specific - Show a specific image</para>
+      </listitem>
+
+      <listitem>
+        <para>mGallery2/Sidebar - Show the Gallery2 sidebar</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>The Random and specific blocks are both used to show an image (or
+    images) in a block. In future versions, these blocks will be combined into
+    one block that can perform both functions, as well as many others (recent
+    images, most viewed image, etc.</para>
+
+    <section>
+      <title id="blkRandom">Random Block</title>
+
+      <para>The random block is a sidebar (or center) block that has the
+      ability to display an image or several images in your theme's block
+      content. It is a standard Postnuke block that can be added through the
+      Blocks administration menu. To add a block:</para>
+
+      <orderedlist>
+        <listitem>
+          <para>Go to your Postnuke administration panel</para>
+        </listitem>
+
+        <listitem>
+          <para>Click on the system tab if you're not already there</para>
+        </listitem>
+
+        <listitem>
+          <para>Click on the Bocks icon</para>
+        </listitem>
+
+        <listitem>
+          <para>Click on the <emphasis>New Block</emphasis> link in the Blocks
+          Administration link menu</para>
+        </listitem>
+
+        <listitem>
+          <para>The standard block options configuration screen will
+          appear</para>
+        </listitem>
+
+        <listitem>
+          <para>In the <emphasis>Title</emphasis> field, name the block
+          anything you want - e.g. - Random Image</para>
+        </listitem>
+
+        <listitem>
+          <para>Select <emphasis>mGallery2/Random</emphasis> from the
+          <emphasis>Block</emphasis> dropdown field</para>
+        </listitem>
+
+        <listitem>
+          <para>Select whichever position you want from the
+          <emphasis>Position</emphasis> dropdown</para>
+
+          <note>
+            <para>Your theme must support blocks for whichever position you
+            select. If the theme doesn't have right blocks and you select the
+            right position, the block will not display unless you edit your
+            theme to support the right block or choose a supported
+            position.</para>
+          </note>
+        </listitem>
+
+        <listitem>
+          <para>Select whether or not you want the Block to be
+          <emphasis>Collapsible</emphasis>. If the theme template supports it,
+          this will show a clickable icon in the corner of the block that will
+          allow the user to collapse the block. This defaults to
+          <emphasis>Yes</emphasis>.</para>
+        </listitem>
+
+        <listitem>
+          <para>Select the <emphasis>Default State </emphasis>for the
+          block</para>
+        </listitem>
+
+        <listitem>
+          <para>Select the <emphasis>Language</emphasis> of the block. The
+          current translations are en-US and deu</para>
+        </listitem>
+
+        <listitem>
+          <para>Click the <emphasis>Update</emphasis> button</para>
+        </listitem>
+
+        <listitem>
+          <para>Now you will see specific options for the
+          <emphasis>mGallery2/Random</emphasis> block</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Show Title </emphasis>will display the title of the
+          image in the block, if selected.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Show Owner</emphasis> will display the owner of the
+          image in the block, if selected</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Show Views</emphasis> will show the number of views
+          in the block, if selected</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Show Date</emphasis> will show the EXIF date of the
+          image in the block, if selected</para>
+        </listitem>
+
+        <listitem>
+          <para>The <emphasis>Number of Images</emphasis> field determines how
+          many images will be displayed in the block. There is no maximum, so
+          put something sane in the field.</para>
+        </listitem>
+
+        <listitem>
+          <para>The <emphasis>Maximum Image Size (width)</emphasis> field will
+          determine the maximum size, in pixels, of the image in the
+          block</para>
+        </listitem>
+
+        <listitem>
+          <para>Select a frame for album objects in the <emphasis>Album
+          Frame</emphasis> dropdown box</para>
+        </listitem>
+
+        <listitem>
+          <para>Select a frame for image objects in the <emphasis>Image
+          Frame</emphasis> dropdown box</para>
+        </listitem>
+
+        <listitem>
+          <para>The last option is another standard Postnuke block option that
+          really isn't relevant to the mGallery2. Just leave the
+          <emphasis>Refresh time for block</emphasis> setting at its default
+          <emphasis>One hour</emphasis> setting</para>
+        </listitem>
+
+        <listitem>
+          <para>Once again, click the <emphasis>Update</emphasis>
+          button</para>
+        </listitem>
+      </orderedlist>
+
+      <para>The block is now available. If you put it in a position that can
+      be seen from the administration template, you should see it now.
+      Otherwise, go to home page or another page with block support for the
+      position you chose. You should now see your block.</para>
+
+      <note>
+        <para>Using the Maximum Size parameter and square frames (Gallery
+        2.2.1+) you can create a grid of images in your block. Set the number
+        of images to four and experiment with the Maximum size parameter until
+        two images fit on a row. The square frame is necesary to keep the
+        width uniform.</para>
+      </note>
+
+      <graphic align="left" fileref="images/random-block-grid.jpg"
+               format="JPG" id="mg2randomBlockGrid" />
+    </section>
+
+    <section id="blkSpecific">
+      <title>Specific Block</title>
+
+      <para>The specific block is a holdover from the original mGallery2
+      source and has not been touched since it was written. It allows you to
+      show a specific image in a block, but no options are enabled for it. The
+      block is hard-coded to display the title and the date of the image. This
+      block uses the image path instead of the image id when specifying an
+      image. The best way to find the image path is to go the image within
+      Gallery2 and click <emphasis>Edit Photo</emphasis>. The path will be
+      displayed on the <emphasis>General</emphasis> tab under the
+      <emphasis>Name</emphasis> section. To add a specific image
+      block:<orderedlist>
+          <listitem>
+            <para>Go to your Postnuke administration panel</para>
+          </listitem>
+
+          <listitem>
+            <para>Click on the system tab if you're not already there</para>
+          </listitem>
+
+          <listitem>
+            <para>Click on the Bocks icon</para>
+          </listitem>
+
+          <listitem>
+            <para>Click on the <emphasis>New Block</emphasis> link in the
+            Blocks Administration link menu</para>
+          </listitem>
+
+          <listitem>
+            <para>The standard block options configuration screen will
+            appear</para>
+          </listitem>
+
+          <listitem>
+            <para>In the <emphasis>Title</emphasis> field, name the block
+            anything you want - e.g. - Dragon</para>
+          </listitem>
+
+          <listitem>
+            <para>Select <emphasis>mGallery2/Specific</emphasis> from the
+            <emphasis>Block</emphasis> dropdown field</para>
+          </listitem>
+
+          <listitem>
+            <para>Select whichever position you want from the
+            <emphasis>Position</emphasis> dropdown</para>
+
+            <note>
+              <para>Your theme must support blocks for whichever position you
+              select. If the theme doesn't have right blocks and you select
+              the right position, the block will not display unless you edit
+              your theme to support the right block or choose a supported
+              position.</para>
+            </note>
+          </listitem>
+
+          <listitem>
+            <para>Select whether or not you want the Block to be
+            <emphasis>Collapsible</emphasis>. If the theme template supports
+            it, this will show a clickable icon in the corner of the block
+            that will allow the user to collapse the block. This defaults to
+            <emphasis>Yes</emphasis>.</para>
+          </listitem>
+
+          <listitem>
+            <para>Select the <emphasis>Default State </emphasis>for the
+            block</para>
+          </listitem>
+
+          <listitem>
+            <para>Select the <emphasis>Language</emphasis> of the block. The
+            current translations are en-US and deu</para>
+          </listitem>
+
+          <listitem>
+            <para>Click the <emphasis>Update</emphasis> button</para>
+          </listitem>
+
+          <listitem>
+            <para>Now you will see specific options for the
+            <emphasis>mGallery2/Specific</emphasis> block</para>
+          </listitem>
+
+          <listitem>
+            <para>Type in the image's path in the <emphasis>Image
+            path</emphasis> field, for instance /album1/dragon.jpg</para>
+          </listitem>
+
+          <listitem>
+            <para>The last option is another standard Postnuke block option
+            that really isn't relevant to the mGallery2. Just leave the
+            <emphasis>Refresh time for block</emphasis> setting at its default
+            <emphasis>One hour</emphasis> setting</para>
+          </listitem>
+
+          <listitem>
+            <para>Once again, click the <emphasis>Update</emphasis>
+            button</para>
+          </listitem>
+        </orderedlist>The block is now available. If you put it in a position
+      that can be seen from the administration template, you should see it
+      now. Otherwise, go to the home page or another page with block support
+      for the position you chose. You should now see your block.</para>
+
+      <graphic fileref="images/block-specific.jpg" format="JPG"
+               id="mg2blockSpecific" />
+
+      <para>This block and the Random block will evenually be integrated into
+      a multi-block that can generate different types of blocks with all of
+      the options enabled.</para>
+    </section>
+
+    <section id="blkSidebar">
+      <title>Sidebar Block</title>
+
+      <para>The Sidebar block, unlike the Random and Specific block, does not
+      display images on your site. Instead, it is designed to take the
+      embedded Gallery2 sidebar out of the modules's image display area and
+      embed it into a block. The Gallery2 sidebar is a collection of links
+      that allow administrators to manage images and albums and also lets
+      regular users search the gallery, print photos to online printing
+      companies, and view slideshows, among other things. The sidebar will
+      only show when the mGallery2 module is active and it will only have
+      content if the <emphasis>Sidebar Block</emphasis> setting is selected in
+      mGallery2's administrative settings. If this setting is not selected,
+      the title bar will show, but the block will be empty and the sidebar
+      will be display within the embedded gallery page. To install:</para>
+
+      <orderedlist>
+        <listitem>
+          <para>Go to your Postnuke administration panel</para>
+        </listitem>
+
+        <listitem>
+          <para>Click on the system tab if you're not already there</para>
+        </listitem>
+
+        <listitem>
+          <para>Click on the Bocks icon</para>
+        </listitem>
+
+        <listitem>
+          <para>Click on the <emphasis>New Block</emphasis> link in the Blocks
+          Administration link menu</para>
+        </listitem>
+
+        <listitem>
+          <para>The standard block options configuration screen will
+          appear</para>
+        </listitem>
+
+        <listitem>
+          <para>In the <emphasis>Title</emphasis> field, name the block
+          anything you want - e.g. - G2 Sidebar</para>
+        </listitem>
+
+        <listitem>
+          <para>Select <emphasis>mGallery2/Sidebar</emphasis> from the
+          <emphasis>Block</emphasis> dropdown field</para>
+        </listitem>
+
+        <listitem>
+          <para>Select whichever position you want from the
+          <emphasis>Position</emphasis> dropdown</para>
+
+          <note>
+            <para>Your theme must support blocks for whichever position you
+            select. If the theme doesn't have right blocks and you select the
+            right position, the block will not display unless you edit your
+            theme to support the right block or choose a supported
+            position.</para>
+          </note>
+        </listitem>
+
+        <listitem>
+          <para>Select whether or not you want the Block to be
+          <emphasis>Collapsible</emphasis>. If the theme template supports it,
+          this will show a clickable icon in the corner of the block that will
+          allow the user to collapse the block. This defaults to
+          <emphasis>Yes</emphasis>.</para>
+        </listitem>
+
+        <listitem>
+          <para>Select the <emphasis>Default State </emphasis>for the
+          block</para>
+        </listitem>
+
+        <listitem>
+          <para>Select the <emphasis>Language</emphasis> of the block. The
+          current translations are en-US and deu</para>
+        </listitem>
+
+        <listitem>
+          <para>Click the <emphasis>Update</emphasis> button</para>
+        </listitem>
+
+        <listitem>
+          <para>There are no specific options for the
+          <emphasis>mGallery2/Sidebar</emphasis> block</para>
+        </listitem>
+
+        <listitem>
+          <para>The last option is another standard Postnuke block option that
+          really isn't relevant to the mGallery2. Just leave the
+          <emphasis>Refresh time for block</emphasis> setting at its default
+          <emphasis>One hour</emphasis> setting</para>
+        </listitem>
+
+        <listitem>
+          <para>Once again, click the <emphasis>Update</emphasis>
+          button.</para>
+        </listitem>
+      </orderedlist>
+
+      <para>The block is now available. If you put it in a position that can
+      be seen from the administration template, you should see it now.
+      Otherwise, go to the home page or another page with block support for
+      the position you chose. You should now see your block.</para>
+
+      <graphic align="left" fileref="images/block-sidebar.jpg" format="JPG" />
+
+      <para>Hopefully. I'll have some time to experiment with styling the
+      block in the future. The contents of the block can be customized within
+      the Gallery2 Site Admin. Just edit the G2 theme and pick the items you
+      want in the sidebar.</para>
+    </section>
+  </chapter>
+
+  <chapter id="xformHook.link">
+    <title id="xformHook.title.link">The Transform Hook</title>
+
+    <para>The mGallery2 transform hook is a tag-based transform hook similar
+    to pn_bbcode. It uses tags that begin with [mg2 to insert gallery images
+    into your site. When the transform hook encounters a tag, it replaces it
+    inline with the HTML of an image block. The tag can be very simple,
+    pointing to a single image, or complex, rendering multiple random images
+    from a specific gallery.</para>
+
+    <section id="activateXform">
+      <title>Activating the transform hook</title>
+
+      <para>The transform hook can be activated for any module. Since the hook
+      inserts html that will display an image, you should only activate this
+      hook for modules that display something, such as News. To activate the
+      hook for a module, follow these steps:</para>
+
+      <orderedlist>
+        <listitem>
+          <para>Go to your Postnuke Administration Panel</para>
+        </listitem>
+
+        <listitem>
+          <para>Click on the system tab if you're not there already</para>
+        </listitem>
+
+        <listitem>
+          <para>Click on the Modules icon</para>
+        </listitem>
+
+        <listitem>
+          <para>Find the module you would like to hook</para>
+
+          <tip>
+            <para>Use the alphabet links above the modules table to make it
+            easier to find your module</para>
+          </tip>
+        </listitem>
+
+        <listitem>
+          <para>Click on the Hooks action for the module</para>
+        </listitem>
+
+        <listitem>
+          <para>Check the checkbox next to <emphasis>Activate mgallery2 for
+          this module</emphasis></para>
+        </listitem>
+
+        <listitem>
+          <para>Click the <emphasis>Update</emphasis> button</para>
+        </listitem>
+      </orderedlist>
+
+      <para>To test the hook, go to the module you've hooked and add some
+      content with an mGallery2 trasform hook tag. See the next sections below
+      for more information on the syntax and options.</para>
+    </section>
+
+    <section id="chHTMLConfig">
+      <title>Postnuke HTML Options</title>
+
+      <para>In order for the images to display correctly within the News
+      module, or any other module, you will need to edit your HTML Options in
+      Postnuke's general site settings. The following HTML options must be
+      <emphasis>Allowed with attributes</emphasis>.</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>&lt;div&gt;</para>
+        </listitem>
+
+        <listitem>
+          <para>&lt;h4&gt; - this is used by the image title caption</para>
+        </listitem>
+
+        <listitem>
+          <para>&lt;p&gt; - this is used by the owner and date captions</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section id="mg2syntax">
+      <title>General tag syntax</title>
+
+      <para>The mGallery2 transform hook tag, in its most basic form is the
+      prefix mg2, followed by a colon, followed by an image or album id. The
+      tag is enclosed in brackets like so:</para>
+
+      <programlisting>[mg2:<emphasis>imageId</emphasis>]</programlisting>
+
+      <para>This example inserts a block of HTML that is returned from the
+      Gallery2 Image Block module and inserts it inline into your content.
+      There are many options in the Image Block module and the transform hook
+      tries to take advantage of them all. the next section will discuss the
+      options and give examples of their use</para>
+    </section>
+
+    <section id="mg2Options">
+      <title>Transform Hook Options</title>
+
+      <para>The hook supports the following imageblock options:</para>
+
+      <section>
+        <title><emphasis>itemID</emphasis> - The album or image id</title>
+
+        <para>This parameter is not specified in the tag. It follows the
+        prefix (mg2:) and consists of an integer that is a valid image or
+        album id in Gallery2.</para>
+
+        <programlisting>[mg2:21]</programlisting>
+
+        <para>This example will show the image with the gallery image id of
+        21. If it is an album, it will show the album highlight. Without
+        arguments, this will show the image using the defaults defined in the
+        mGallery2</para>
+      </section>
+
+      <section>
+        <title><emphasis>show</emphasis> - How to show the image</title>
+
+        <para>This parameter takes a pipe-delimited list of options that
+        determine what will be shown with the image. Options include title,
+        owner, date, views, and fullSize. None of these options is required.
+        The options will be described below after the example.<programlisting>[mg2:41 show=owner|date]</programlisting>This
+        example will show the image with owner and date information pulled
+        from Gallery2</para>
+
+        <section>
+          <title><emphasis>title</emphasis> - The title of the image</title>
+
+          <para>This show option adds a caption to the image. The caption
+          cannot be specified. It will read the title from Gallery2.</para>
+
+          <programlisting>[mg2:11 show=title]</programlisting>
+        </section>
+
+        <section>
+          <title><emphasis>owner</emphasis> - The owner of the image</title>
+
+          <para>This show option adds a caption to the image with the image
+          owner's name.</para>
+
+          <programlisting>[mg2:10 show=owner]</programlisting>
+        </section>
+
+        <section>
+          <title><emphasis>date</emphasis> - The date information from the
+          image</title>
+
+          <para>This show option adds a caption to the image with the image's
+          date information.</para>
+
+          <programlisting>[mg:22 show=date]</programlisting>
+        </section>
+
+        <section>
+          <title><emphasis>fullSize</emphasis> - Show the image
+          fullSize</title>
+
+          <para>Normally, the imageblock plugin, which the transform hook
+          utilizes, returns the thumbnail for an image, but this show option
+          tells Gallery2 to return a full-sized image. The size of the image
+          can be controlled with the maxSize option.</para>
+
+          <programlisting>[mg2:2 show=fullSize]</programlisting>
+        </section>
+
+        <section>
+          <title><emphasis>views</emphasis> - Show the number of views</title>
+
+          <para>This show option adds a caption to the image with the number
+          of views the image has set. This number is determined by
+          Gallery2.</para>
+
+          <programlisting>[mg2:445 show=views]</programlisting>
+        </section>
+      </section>
+
+      <section>
+        <title><emphasis>maxsize</emphasis> - Maximum size of a full-sized
+        image</title>
+
+        <para>This parameter sets the maximum size in pixels of the longest
+        side of the image. If it is used in conjunction with show=fullSize it
+        will limit the size of the full-sized images returned. Without the
+        show=fullSize option, it will limit the size of thumbnails.</para>
+
+        <programlisting>[mg2:37 show=fullSize|views|owner|title maxSize=800]</programlisting>
+
+        <para>This example renders a full-sized image with a maximum height or
+        width of 800 pixels. It also includes captions with owner, title, and
+        views.</para>
+
+        <programlisting>[mg2:22 maxSize=50]</programlisting>
+
+        <para>This example limits the height or width of the thumbnail image
+        to 50 pixels.</para>
+      </section>
+
+      <section>
+        <title><emphasis>type</emphasis> - The type of imageblock to
+        show</title>
+
+        <para>This parameter determines the type of imageblock to show. The
+        possible options are specificImage, randomImage, dailyImage,
+        weeklyImage, monthlyImage, dailyAlbum, weeklyAlbum, monthlyAlbum,
+        viewedImage, randomAlbum, recentAlbum, viewedAlbum. Only one option is
+        permitted.</para>
+
+        <section id="specificImage">
+          <title><emphasis>specificImage</emphasis> - Show a specific
+          image</title>
+
+          <para>This block type shows a specific image by image id. This is
+          the default block type.</para>
+
+          <programlisting>[mg2:22 type=specificImage]</programlisting>
+
+          <para>This example shows the image with an id of 22.</para>
+
+          <programlisting>[mg2:22]</programlisting>
+
+          <para>Since specificImage is the default option, this also shows the
+          image with an id of 22.</para>
+        </section>
+
+        <section>
+          <title><emphasis>randomImage</emphasis> - Show a random
+          image</title>
+
+          <para>This block type will show a random image from the album
+          specified in the album id. To choose an image from the entire
+          gallery, specify the root gallery or an d of 0.</para>
+
+          <programlisting>[mg2:47 type=randomImage]</programlisting>
+
+          <para>This example will show a random image from the album with an
+          id of 47.</para>
+
+          <programlisting>[mg2:0 type=randomImage]</programlisting>
+
+          <para>This example will show a random image from the entire
+          gallery</para>
+        </section>
+
+        <section>
+          <title><emphasis>dailyImage</emphasis> - Show the daily
+          image</title>
+
+          <para>This block type will show the daily image that is determined
+          by Gallery2. This image changes daily. Use an itemId of 0 for this
+          type.</para>
+
+          <programlisting>[mg2:0 type=dailyImage]</programlisting>
+        </section>
+
+        <section>
+          <title><emphasis>weeklyImage</emphasis> - Show the weekly
+          image</title>
+
+          <para>This block type will show the weekly image that is determined
+          by Gallery2. This image changes weekly. Use an itemId of 0 for this
+          type.</para>
+
+          <programlisting>[mg2:0 type=weeklyImage]</programlisting>
+        </section>
+
+        <section>
+          <title><emphasis>monthlyImage</emphasis> - Show the monthly
+          image</title>
+
+          <para>This block type will show the monthly image that is determined
+          by Gallery2. This image changes monthly. Use an itemId of 0 for this
+          type.</para>
+
+          <programlisting>[mg2:0 type=monthlyImage]</programlisting>
+        </section>
+
+        <section>
+          <title><emphasis>dailyAlbum</emphasis> - Show the daily
+          album</title>
+
+          <para>This block type will show the highlighted photo of the daily
+          album that is determined by Gallery2. This album changes
+          daily.</para>
+
+          <programlisting>[mg2:0 type=dailyAlbum]</programlisting>
+        </section>
+
+        <section>
+          <title><emphasis>weeklyAlbum</emphasis> - Show the weekly
+          album</title>
+
+          <para>This block type will show the highlighted photo of the weekly
+          album that is determined by Gallery2. This album changes
+          weekly.</para>
+
+          <programlisting>[mg2:0 type=weeklyAlbum]</programlisting>
+        </section>
+
+        <section>
+          <title><emphasis>monthlyAlbum</emphasis> - Show the monthly
+          album</title>
+
+          <para>This block type will show the highlighted photo of the monthly
+          album that is determined by Gallery2. This album changes
+          monthly.</para>
+
+          <programlisting>[mg2:0 type=monthlyAlbum]</programlisting>
+        </section>
+
+        <section>
+          <title><emphasis>viewedImage</emphasis> - Show the most viewed
+          image</title>
+
+          <para>This block type will show the most viewed image from an album
+          identified by itemId. An itemID of 0 will choose from the entire
+          gallery.</para>
+
+          <programlisting>[mg2:24 type=viewdImage]</programlisting>
+
+          <para>This example will show the most viewed image from the album
+          with an id of 24</para>
+
+          <para></para>
+
+          <programlisting>[mg2:0 type-viewedImage]</programlisting>
+
+          <para>This example will show the most viewed image in the
+          gallery.</para>
+        </section>
+
+        <section>
+          <title><emphasis>randomAlbum</emphasis> - Show a random
+          album</title>
+
+          <para>This block type will show the highlighted photo from a random
+          album from the gallery.</para>
+
+          <programlisting>[mg2:0 type=randomAlbum]</programlisting>
+        </section>
+
+        <section>
+          <title><emphasis>recentAlbum</emphasis> - Show the most recent
+          album</title>
+
+          <para>This block type will show the highlighted photo from the most
+          recent album in the gallery.</para>
+
+          <programlisting>[mg2:0 type=recentAlbum]</programlisting>
+        </section>
+
+        <section>
+          <title><emphasis>viewedAlbum</emphasis> - Show the most viewed
+          album</title>
+
+          <para>This block type will show the highlighted photo from the most
+          viewed album in the gallery.</para>
+
+          <programlisting>[mg2:0 type=viewedAlbum]</programlisting>
+        </section>
+      </section>
+
+      <section>
+        <title><emphasis>aframe</emphasis> - Album Frame</title>
+
+        <para>This parameter selects a frame from the imageframe module that
+        will be displayed around albums.</para>
+
+        <programlisting>[mg2:22 aframe=dots]</programlisting>
+
+        <para>This example will display the dots frame around the highlighted
+        photo from the album with an id of 22. If 22 is an image, it will use
+        the default item frame from the module's settings. To view the
+        different frames, click on the frame samples page in mGallery2's
+        module settings.</para>
+      </section>
+
+      <section>
+        <title><emphasis>iframe</emphasis> - Image Frame</title>
+
+        <para>This parameter selects a frame from the imageframe module that
+        will be displayed around images.</para>
+
+        <programlisting>[mg2:4 iframe=shadow]</programlisting>
+
+        <para>This example will display the shadow frame around the image with
+        an id of 4. If 22 is an abum, it will use the default album frame from
+        the module's settings. To view the different frames, click on the
+        frame samples page in mGallery2's module settings.</para>
+      </section>
+
+      <section>
+        <title><emphasis>frame</emphasis> - Image and Album Frame</title>
+
+        <para>This parameter can be used in place of the iframe and aframe
+        parameters to specify thhttpe frame for albums and images.</para>
+
+        <programlisting>[mg2:0 frame=gold type=randomAlbum]</programlisting>
+
+        <para>This example will display the gold frame around the random album
+        chosen by Gallery2 from the entire gallery.</para>
+
+        <para></para>
+
+        <programlisting>[mg2:0 frame=flicking type=viewedImage]</programlisting>
+
+        <para>This example will display the flicking frame around the most
+        viewed image in the gallery.</para>
+      </section>
+
+      <section>
+        <title><emphasis>class</emphasis> - CSS class</title>
+
+        <para>This parameter selects the class that will be applied to the
+        imageblock's div. The options for this parameter are a list of
+        predefined divs:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para><emphasis>left</emphasis> - float left</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>right</emphasis> - float right</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>center/centre</emphasis> - center the image</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>normal</emphasis> - no styling</para>
+          </listitem>
+        </itemizedlist>
+
+        <programlisting>[mg2:44 class=left show=owner|date|title]</programlisting>
+
+        <para>This example will display the image with an id of 44 and float
+        the block left. The block will have owner, date, and title
+        captions.</para>
+      </section>
+
+      <section>
+        <title><emphasis>n</emphasis> - Number of images</title>
+
+        <para>This parameter specifies the number of images to display. There
+        is no sanity checking on this parameter, so if you specify 100 images,
+        you will get 100 images. Be warned! f you specify the n parameter for
+        a <link linkend="specificImage">specificImage</link> type, only one
+        instance of the image will be displayed.</para>
+
+        <programlisting>[mg2:12 type=randomImage n=3 class=center]</programlisting>
+
+        <para>This example will display three random images from the album
+        with an id of 12 and center the images. Without captions, the images
+        will display inline.<parameter></parameter></para>
+
+        <para><parameter></parameter><programlisting>[mg2:12 type=randomImage n=3 class=center show=title]</programlisting><parameter>This
+        example will display three random images from the album with an id of
+        12 and center the images. Since this example includes a title caption,
+        the images will display vertically.</parameter></para>
+      </section>
+    </section>
+
+    <section>
+      <title>itemId and block types</title>
+
+      <para>All mg2 tags must specify an itemId. This itemId can refer to an
+      image ID or an album ID. Image IDs are only used when the specificImage
+      block type is selected. All other blocks use an album ID. If you try to
+      use an image id with an album-type image block, mGallery2 will return an
+      error instead of an image.</para>
+    </section>
+
+    <section>
+      <title>Escaping mg2 tags</title>
+
+      <para>If you want to put mg2 tags somewhere in your site without having
+      them processed (e.g. - a tutorial) just begin the tag with a doble
+      bracket.</para>
+
+      <programlisting>[[mg2:12 type=randomImage]</programlisting>
+    </section>
+  </chapter>
+
+  <chapter id="chG2mage">
+    <title>Using g2Image with mGallery2 and Scribite</title>
+
+    <para>G2Image is a TimyMCE plugin that adds an icon to the TinyMCE
+    toolbar. The plugin allows a user to choose an image from a Gallery2
+    installation by browsing thumbnails. In this document, it will be set up
+    to insert tags which will be transformed by the mGallery2 transform hook
+    into image blocks. This chapter describes the steps that need to be taken
+    to get <ulink
+    url="http://g2image.steffensenfamily.com/index.php?title=Main_Page">g2Image</ulink>
+    working with TinyMCE within Scribite.</para>
+
+    <section id="g2ImageReqs">
+      <title>Requirements</title>
+
+      <para>To get this combination working, you will need several components
+      installed and working:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>Postnuke .764 - download at <ulink
+          url="http://www.postnuke.com/">http://www.postnuke.com/</ulink></para>
+        </listitem>
+
+        <listitem>
+          <para>mGallery .02+ - download at <ulink
+          url="http://noc.postnuke.com/projects/mgallery2/">http://noc.postnuke.com/projects/mgallery2/</ulink></para>
+        </listitem>
+
+        <listitem>
+          <para>Scribite - download at <ulink
+          url="http://noc.postnuke.com/projects/scribite/">http://noc.postnuke.com/projects/scribite/</ulink></para>
+        </listitem>
+
+        <listitem>
+          <para>Scribite configured to use TinyMCE and hooked to the News
+          module</para>
+        </listitem>
+
+        <listitem>
+          <para>Download G2Image - <ulink
+          url="http://g2image.steffensenfamily.com/index.php?title=Main_Page">http://g2image.steffensenfamily.com/index.php?title=Main_Page</ulink></para>
+        </listitem>
+      </itemizedlist>
+
+      <para>You can find documentation to install each of these components at
+      their respective web sites or within the downloaded archive. The
+      installaton and configuration of G2Image will be described below.</para>
+    </section>
+
+    <section id="g2ImageInstall">
+      <title>Install and configure g2image files</title>
+
+      <para>The G2Image download archive contains two folders. The first is
+      <filename>tinymce_plugin</filename>, which is the one we're interested
+      in. The second is <filename>wordpress_plugin</filename>, which we will
+      ignore. Inside the <filename>tinymce_plugin</filename> folder is another
+      folder, <filename>g2image</filename>. This is the folder we will be
+      working with. To install:</para>
+
+      <orderedlist>
+        <listitem>
+          <para>Copy the <filename>g2image</filename> folder into your
+          <filename>modules/scribite/pnincludes/tiny_mce/plugins</filename>
+          folder</para>
+        </listitem>
+
+        <listitem>
+          <para>Open the <filename>g2image</filename> folder</para>
+        </listitem>
+
+        <listitem>
+          <para>Open the config.php file</para>
+        </listitem>
+
+        <listitem>
+          <para>Go to line 56, which should read:<programlisting>$g2ic_default_alignment = 'none';</programlisting></para>
+        </listitem>
+
+        <listitem>
+          <para>Change the word <emphasis>none</emphasis> to
+          <emphasis>left</emphasis></para>
+        </listitem>
+
+        <listitem>
+          <para>Go to line 63. There should be four lines here defining custom
+          classes. All of them should be set to unused, like the one
+          below:</para>
+
+          <programlisting>$g2ic_custom_class_1 = 'not_used';</programlisting>
+        </listitem>
+
+        <listitem>
+          <para>Edit each of the four lines to define the following custom
+          classes:</para>
+
+          <programlisting>$g2ic_custom_class_1 = 'left';
+$g2ic_custom_class_2 = 'right';
+$g2ic_custom_class_3 = 'center';
+$g2ic_custom_class_4 = 'centre';</programlisting>
+        </listitem>
+
+        <listitem>
+          <para>Go to line 98, which should read:</para>
+
+          <programlisting>$g2ic_default_action = 'thumbnail_image';</programlisting>
+        </listitem>
+
+        <listitem>
+          <para>Edit the line to read:</para>
+
+          <programlisting>$g2ic_default_action = 'drupal_g2_filter';</programlisting>
+        </listitem>
+
+        <listitem>
+          <para>Go to line 121, which should read:</para>
+
+          <programlisting>$g2ic_embedded_mode = FALSE;</programlisting>
+        </listitem>
+
+        <listitem>
+          <para>Change the value to <emphasis>TRUE</emphasis></para>
+        </listitem>
+
+        <listitem>
+          <para>Go to line 143, which should read:</para>
+
+          <programlisting>$g2ic_gallery2_uri = 'http://www.domain.com/gallery2/main.php';</programlisting>
+        </listitem>
+
+        <listitem>
+          <para>Change the value to your your Gallery2 URI, including the
+          main.php at the end</para>
+        </listitem>
+
+        <listitem>
+          <para>Go to line 159, which should read:<programlisting>$g2ic_drupal_g2_filter = FALSE;</programlisting></para>
+        </listitem>
+
+        <listitem>
+          <para>Change the value to <emphasis>TRUE</emphasis></para>
+        </listitem>
+
+        <listitem>
+          <para>Go to line 163, which should read:</para>
+
+          <programlisting>$g2ic_drupal_g2_filter_prefix = G2;</programlisting>
+        </listitem>
+
+        <listitem>
+          <para>Change the value from <emphasis>G2</emphasis> to
+          <emphasis>mg2</emphasis></para>
+        </listitem>
+
+        <listitem>
+          <para>Save the file</para>
+        </listitem>
+      </orderedlist>
+
+      <para>Because the Scribite module includes a version of TinyMCE with a
+      version number greater than 2.03, you need to copy the files in the
+      <filename>g2image/TinyMCE_version_2.0.3_files</filename> folder up to
+      the <filename>g2image</filename> folder, overwriting the ones that are
+      there. </para>
+    </section>
+
+    <section id="chOpenBasedir">
+      <title>g2Image and OpenBasedir</title>
+
+      <para>If you or your provider have activated the open_basedir
+      restriction in PHP, G2Image will work, but you will see lots of errors.
+      The G2Image code, as downloaded, tries to figure out if it is in a
+      WordPress installation by searching for wp-config.php somewhere in the
+      directory tree from its current location. As it climbs up the tree, it
+      eventually tries to leave the web root and generates these errors. You
+      can get rid of this functionality by editing the file
+      <filename>modules/scribite/pnincludes/tiny_mce/plugins/g2image/init.php</filename>.
+      There is a section in the code labeled WPG2 Validation. This section
+      needs to be removed. simply delete lines 23 through 137 in the
+      file.</para>
+    </section>
+
+    <section>
+      <title>Updating Scribite</title>
+
+      <para>Before enabling the plugin in Scribite, Scribite needs to know
+      where to add the plugin's icon to the TinyMCE toolbar. This requires
+      more editing:</para>
+
+      <orderedlist>
+        <listitem>
+          <para>Open the file
+          <filename>modules/scribite/pntemplates/tinymce_editorheader.htm</filename></para>
+        </listitem>
+
+        <listitem>
+          <para>Go to line 44, which should read:</para>
+
+          <programlisting>theme_advanced_buttons3_add : "emotions,iespell,media,advhr,separator,print,separator,ltr,rtl,separator,fullscreen",</programlisting>
+        </listitem>
+
+        <listitem>
+          <para>Add g2image at the end of the list, like this:</para>
+
+          <programlisting>theme_advanced_buttons3_add : "emotions,iespell,media,advhr,separator,print,separator,ltr,rtl,separator,fullscreen,g2image",</programlisting>
+        </listitem>
+
+        <listitem>
+          <para>Save the file</para>
+        </listitem>
+      </orderedlist>
+
+      <para>Now that scribite knows how to add the icon to the plugin, you
+      must enable the plgin within Scribite. To do so:</para>
+
+      <orderedlist>
+        <listitem>
+          <para>Go to your Postnuke Administration Panel</para>
+        </listitem>
+
+        <listitem>
+          <para>Click on the <emphasis>3rd party</emphasis> tab</para>
+        </listitem>
+
+        <listitem>
+          <para>Click on the Scribite icon</para>
+        </listitem>
+
+        <listitem>
+          <para>Click on the <emphasis>tiny_mce</emphasis> settings tab</para>
+        </listitem>
+
+        <listitem>
+          <para>Find <emphasis>g2image</emphasis> in the tiny_mce Plugins
+          section</para>
+        </listitem>
+
+        <listitem>
+          <para>Check the checkbox for <emphasis>g2image</emphasis></para>
+        </listitem>
+
+        <listitem>
+          <para>Click <emphasis>Save Configuration</emphasis></para>
+        </listitem>
+      </orderedlist>
+
+      <para>To test, add a story in your News module. You should see the
+      g2image icon on the right side of the lowest toolbar in TinyMCE. The
+      screenshot below shows TinyMCE with the G2image icon.</para>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/scribite-g2image-icon.jpg" />
+        </imageobject>
+      </mediaobject>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>Support</title>
+
+    <para>mGallery2 is registered as a project in the NOC. Please use the NOC
+    for all support requests.</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>Home Page</emphasis> - <ulink
+        url="http://noc.postnuke.com/projects/mgallery2/">http://noc.postnuke.com/projects/mgallery2</ulink></para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>Forums</emphasis> - <ulink
+        url="http://noc.postnuke.com/forum/?group_id=388">http://noc.postnuke.com/forum/?group_id=388</ulink></para>
+      </listitem>
+    </itemizedlist>
+  </chapter>
+</book>

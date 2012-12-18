@@ -1,0 +1,65 @@
+/* $Id: style.css 59 2008-11-28 05:24:35Z mateo $ */
+
+div.giImageBlock.left {
+	float: left;
+	margin: 1em;
+}
+
+div.giImageBlock.right {
+	float: right;
+	margin: 1em;
+}
+
+div.giImageBlock.nowrap {
+	float: none;
+	margin: 1em;
+}
+
+.giImageBlock-clear-both {
+  clear: both;
+}
+
+img.g2image_float_left, div.g2image_float_left 
+{
+  float: left;
+  margin: 4px;
+}
+
+img.g2image_float_right, div.g2image_float_right {
+  float: right;
+  margin: 4px;
+}
+
+img.g2image_centered, div.g2image_centered {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+img.g2image_float_left_inline, div.g2image_float_left_inline 
+{
+  float: left;
+  margin: 4px;
+}
+
+img.g2image_float_right_inline, div.g2image_float_right_inline {
+  float: right;
+  margin: 4px;
+}
+
+img.g2image_centered_inline, div.g2image_centered_inline {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* Display the image block inline */
+div.one-image  {
+	display: inline;
+}
+
+div.one-image table {
+	display: inline;
+}

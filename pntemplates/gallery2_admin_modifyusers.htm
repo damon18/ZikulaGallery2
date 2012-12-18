@@ -1,0 +1,20 @@
+<!--[* $Id: gallery2_admin_modifyusers.htm 71 2008-12-16 12:45:01Z ph $ *]-->
+
+<!--[include file='gallery2_admin_menu.htm']-->
+
+<h2><!--[pnml name='_MG2SYNCHRONIZEUSERS']--></h2>
+<form class="pn-adminform" action="<!--[pnmodurl modname='mGallery2' type='admin' func='updateusers']-->" method="post" enctype="application/x-www-form-urlencoded">
+<div>
+<table border="0" width="100%">
+	<tr>
+		<td>
+			<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module='mGallery2']-->" />
+			<div class="pn-adminformrow">
+			<input name="submit" type="submit" value="<!--[pnml name='_MG2SYNCHRONIZEUSERS']-->" />
+			</div>
+		</td>
+	</tr>
+</table>
+</div>
+<div style="clear:both"></div>
+</form>

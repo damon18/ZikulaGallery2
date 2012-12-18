@@ -1,0 +1,21 @@
+<!--[* $Id: gallery2_admin_resynchronize.htm 74 2008-12-18 21:45:01Z ph $ *]-->
+
+<!--[include file='gallery2_admin_menu.htm']-->
+
+<div class="pn-admincontainer">
+<h2><!--[pnml name='_MG2RESYNCHRONIZE']--></h2>
+<!--[if $synchronize]-->
+<div class="pn-informationmsg"><!--[pnml name="_MG2RESYNCWARNING"]--></div>
+<form class="pn-adminform" action="<!--[pnmodurl modname='mGallery2' type='admin' func='updateusersandgroups']-->" method="post" enctype="application/x-www-form-urlencoded">
+<div>
+    <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module='mGallery2']-->" />
+    <div class="pn-adminformrow">
+        <input name="submit" type="submit" value="<!--[pnml name='_MG2RESYNCHRONIZE']-->" />
+    </div>
+</div>
+<div style="clear:both"></div>
+</form>
+<!--[else]-->
+<div class="pn-informationmsg"><!--[pnml name="_MG2SYNCDISABLED"]--></div>
+<!--[/if]-->
+</div>

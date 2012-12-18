@@ -1,0 +1,149 @@
+<!--[* $Id: gallery2_admin_modifyconfig.htm 79 2009-08-18 21:52:39Z ph $ *]-->
+
+<!--[include file='gallery2_admin_menu.htm']-->
+
+<div class="pn-admincontainer">
+<h2><!--[pnml name='_MODIFYCONFIG']--></h2>
+<form class="pn-adminform" action="<!--[pnmodurl modname='mGallery2' type='admin' func='updateconfig']-->" method="post" enctype="application/x-www-form-urlencoded">
+<div>
+	<fieldset id="mg2_mainparams">
+		<legend><!--[pnml name='_MG2MAINPARAMS']--></legend>
+
+		<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module='mGallery2']-->" />
+		<div class="pn-adminformrow">
+			<label for="gallery2_basedirectory"><!--[pnml name='_MG2BASEDIRECTORY']--></label>
+			<input id="gallery2_basedirectory" type="text" name="basedirectory" size="80" value="<!--[$basedirectory|pnvarprepfordisplay]-->" />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="gallery2_g2uri"><!--[pnml name='_MG2G2URI']--></label>
+			<input id="gallery2_g2uri" type="text" name="g2uri" size="80" value="<!--[$g2uri|pnvarprepfordisplay]-->" />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="gallery2_sideblock"><!--[pnml name='_MG2SIDEBLOCK']--></label>
+			<input id="gallery2_sideblock" name="sideblock" type="checkbox" value="1"<!--[if $sideblock eq 1]--> checked="checked"<!--[/if]--> />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="gallery2_imageblock"><!--[pnml name='_MG2IMAGEBLOCKENABLED']--></label>
+			<span id="gallery2_imageblock" style="color:<!--[if $image_block eq 1]-->green<!--[else]-->red<!--[/if]-->"><!--[pnml name='_MG2ENABLEDCORE']--></span>
+		</div>
+		<div class="pn-adminformrow">
+			<label for="gallery2_imageframe"><!--[pnml name='_MG2IMAGEFRAMEENABLED']--></label>
+			<span id="gallery2_imageframe" style="color:<!--[if $image_frame eq 1]-->green<!--[else]-->red<!--[/if]-->"><!--[pnml name='_MG2ENABLEDCORE']--></span>
+		</div>
+		<div class="pn-adminformrow">
+			<label for="gallery2_overridetheme"><!--[pnml name='_MG2OVERRIDETHEME']--> (<!--[$g2deftheme|pnvarprepfordisplay]-->)</label>
+			<input id="gallery2_overridetheme" name="g2overridetheme" type="checkbox" value="1"<!--[if $g2embtheme neq '']--> checked="checked"<!--[/if]--> />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="gallery2_g2embtheme"><!--[pnml name='_MG2EMBTHEME']--></label>
+			<select id="gallery2_g2embtheme" name="g2embtheme">
+				<!--[html_options values=$g2themelist output=$g2themelist selected=$g2embtheme]-->
+			</select>
+		</div>
+	</fieldset>
+
+	<fieldset id="mg2_syncparams">
+		<legend><!--[pnml name='_MG2SYNCPARAMS']--></legend>
+		<div class="pn-adminformrow">
+			<label for="gallery2_synchronize"><!--[pnml name='_MG2ENABLESYNC']--></label>
+			<input id="gallery2_synchronize" name="synchronize" type="checkbox" value="1"<!--[if $synchronize eq 1]--> checked="checked"<!--[/if]--> />
+		</div>
+        <!--[if $useralbum_opt]-->
+        <div class="pn-warningmsg">The Gallery2 PLugin 'User Albums' is installed and activated!<br />Config: <!--[$useralbum_opt|pnvarprepfordisplay]--><br />LANG MISSING</div>
+        <!--[/if]-->
+		<div class="pn-adminformrow">
+			<label for="gallery2_syncusers"><!--[pnml name='_MG2SYNCUSERS']--></label>
+            <ul>
+			    <li><input id="gallery2_syncusers" type="radio" name="syncusers" value="all"<!--[if $syncusers eq 'all']--> checked="checked"<!--[/if]--> />
+                    <!--[pnml name='_MG2SYNCALLUSERS']-->
+                <li><input id="gallery2_syncusers" type="radio" name="syncusers" value="group"<!--[if $syncusers eq 'group']--> checked="checked"<!--[/if]--> />
+                    <!--[pnml name='_MG2SYNCUSERSOFGROUP']--><br />
+                    <select id="gallery2_zkgroups" name="zkgroup[]" size="5" multiple="multiple" />
+                        <!--[html_options options=$zkgroups selected=$zkgroup2]-->
+			        </select>
+            </ul>
+		</div>
+<div class="pn-informationmsg">The group settings below are related to the above user settings - LANG MISSING</div>
+		<div class="pn-adminformrow">
+			<label for="gallery2_syncgroups1"><!--[pnml name='_MG2SYNCGROUPS']--></label>
+            <ul>
+			    <li><input id="gallery2_syncgroups1" type="radio" name="syncgroups" value="all"<!--[if $syncgroups eq 'all']--> checked="checked"<!--[/if]--> />
+                    <!--[pnml name='_MG2SYNCALLGROUPS']-->
+                    <input id="gallery2_skipemptygroup" name="skipemptygroup" type="checkbox" value="1"<!--[if $skipemptygroup eq 1]--> checked="checked"<!--[/if]--> />
+                    <!--[pnml name='_MG2SKIPEMPTYGROUP']--></li>
+			    <li><input id="gallery2_syncgroups2" type="radio" name="syncgroups" value="none"<!--[if $syncgroups eq 'none']--> checked="checked"<!--[/if]--> />
+                    <!--[pnml name='_MG2SYNCNOGROUPS']--></li>
+                <li><input id="gallery2_syncgroups3" type="radio" name="syncgroups" value="group"<!--[if $syncgroups eq 'group']--> checked="checked"<!--[/if]--> />
+                    <!--[pnml name='_MG2SYNCPUTINGROUP']--><br />
+                    <select id="gallery2_g2groups" name="g2group[]" size="5" multiple="multiple" />
+                        <!--[html_options options=$g2groups selected=$g2group2]-->
+			        </select><br />
+                    <input id="gallery2_g2groups_opts1" type="radio" name="g2group_opts" value="opt1"<!--[if $g2group_opts eq 'opt1']--> checked="checked"<!--[/if]--> />
+                    <!--[pnml name='_MG2G2GROUPOPT1']--><br />
+                    <input id="gallery2_g2groups_opts2" type="radio" name="g2group_opts" value="opt2"<!--[if $g2group_opts eq 'opt2']--> checked="checked"<!--[/if]--> />
+                    <!--[pnml name='_MG2G2GROUPOPT2']--></li>
+            </ul>
+		</div>
+		<div class="pn-adminformrow">
+<div class="pn-informationmsg">Explanation of Patch - LANG missing</div>
+			<label for="gallery2_supportsha"><!--[pnml name='_MG2SUPPORTSHA']--></label>
+			<input id="gallery2_supportsha" name="supportsha" type="checkbox" value="1"<!--[if $supportsha eq 1]--> checked="checked"<!--[/if]--> />
+		</div>
+    </fieldset>
+
+	<fieldset id="mg2_hookparams">
+		<legend><!--[pnml name='_MG2HOOKPARAMS']--><legend>
+		<div class="pn-adminformrow">
+			<label for="gallery2_showtitle"><!--[pnml name='_MG2SHOWTITLE']--></label>
+			<input id="gallery2_showtitle" name="showTitle" type="checkbox" value="1"<!--[if $showTitle eq 1]--> checked="checked"<!--[/if]--> />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="gallery2_showowner"><!--[pnml name='_MG2SHOWOWNER']--></label>
+			<input id="gallery2_showowner" name="showOwner" type="checkbox" value="1"<!--[if $showOwner eq 1]--> checked="checked"<!--[/if]--> />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="gallery2_showdate"><!--[pnml name='_MG2SHOWDATE']--></label>
+			<input id="gallery2_showdate" name="showDate" type="checkbox" value="1"<!--[if $showDate eq 1]--> checked="checked"<!--[/if]--> />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="gallery2_showviews"><!--[pnml name='_MG2SHOWVIEWS']--></label>
+			<input id="gallery2_showviews" name="showViews" type="checkbox" value="1"<!--[if $showViews eq 1]--> checked="checked"<!--[/if]--> />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="gallery2_fullsize"><!--[pnml name='_MG2SHOWFULLSIZE']--></label>
+			<input id="gallery2_fullsize" name="fullSize" type="checkbox" value="1"<!--[if $fullSize eq 1]--> checked="checked"<!--[/if]--> />
+		</div>
+		<div class="pn-adminformrow">
+			<label for="gallery2_maxsize"><!--[pnml name='_MG2MAXSIZE']--></label>
+			<input id="gallery2_maxsize" name="maxSize" type="text" size="5" value="<!--[$maxSize]-->" />
+		</div>
+  	<!--[if $frames]-->			
+		<div class="pn-adminformrow">
+			<label for="gallery2_albumframe"><!--[pnml name='_MG2ALBUMFRAME']--></label>
+			<select id="gallery2_albumframe" name="albumFrame">
+				<!--[html_options options=$frames selected=$albumFrame]-->
+			</select>
+		</div>
+		<div class="pn-adminformrow">
+			<label for="gallery2_itemframe"><!--[pnml name='_MG2ITEMFRAME']--></label>
+			<select id="gallery2_itemframe" name="itemFrame">
+				<!--[html_options options=$frames selected=$itemFrame]-->
+			</select>
+		</div>
+	<!--[/if]-->	
+	<!--[if $sample]-->
+		<div class="pn-adminformrow">
+			<span id="gallery2_frame_sample"><a href="<!--[$sample]-->" target="new"><!--[pnml name='_MG2SAMPLEFRAMES']--></a></span>
+		</div>
+	<!--[/if]-->	  
+	</fieldset>
+
+    <!--[pnmodcallhooks hookobject='module' hookaction='modifyconfig' hookid='mGallery2' module='mGallery2']-->
+    <div class="pn-adminformrow pn-adminformbuttons">
+        <!--[pnbutton src=button_ok.gif set=icons/small alt="_UPDATECONFIG" title="_UPDATECONFIG"]-->
+        <a href="<!--[pnmodurl modname=mGallery2 type=admin]-->"><!--[pnimg modname=core src=button_cancel.gif set=icons/small altml=true titleml=true alt="_CANCEL" title="_CANCEL"]--></a>
+	</div>
+	<div style="clear:both"></div>
+</div>
+</form>
+</div>

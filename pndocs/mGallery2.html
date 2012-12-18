@@ -1,0 +1,433 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>mGallery 0.2 - Zikula bridge module</title><link rel="stylesheet" href="docbook.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.67.2"><meta name="description" content="This manual documents how the the menalto Gallery2 bridge for
+      Zikula works. mGallery2 is a utility module that embeds the Gallery2
+      web application into Zikula"><meta name="keywords" content="mGallery, Zikula, Menalto, gallery, g2"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="book" lang="en-US"><div class="titlepage"><div><div><h1 class="title"><a name="id2452402"></a>mGallery 0.2 - Zikula bridge module</h1></div><div><div class="authorgroup"><div class="author"><h3 class="author"><span class="firstname">Johnny</span> <span class="surname">Birchett</span></h3></div></div></div><div><p class="releaseinfo">Version .2-1</p></div><div><p class="copyright">Copyright © 2007 mGallery2 Development Team</p></div><div><div class="legalnotice"><a name="id2452868"></a><p>Permission is granted to copy, distribute and/or modify this
+      document under the terms of the GNU Free Documentation License, Version
+      1.2 or any later version published by the Free Software Foundation, with
+      no Invariant Sections, no Front-Cover Texts and no Back-Cover Texts. A
+      copy of the license can be obtained from the <a href="http://www.gnu.org/licenses/fdl.txt" target="_top">Free Software
+      foundation</a></p></div></div><div><div class="abstract"><p class="title"><b>Abstract</b></p><p>This manual documents how the the menalto Gallery2 bridge for
+      Zikula works. mGallery2 is a utility module that embeds the Gallery2
+      web application into Zikula</p></div></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="chapter"><a href="#ch1-install">1. Installation</a></span></dt><dd><dl><dt><span class="section"><a href="#reqs">Requirements</a></span></dt><dt><span class="section"><a href="#g2inst">Install Gallery2</a></span></dt><dd><dl><dt><span class="section"><a href="#doubleDoubleNotes">Gallery2 2.2.1 (Double-Double) Notes</a></span></dt></dl></dd><dt><span class="section"><a href="#mg2Install">Installing mGallery2</a></span></dt><dd><dl><dt><span class="section"><a href="#mg2inst">Install the module</a></span></dt><dt><span class="section"><a href="#cfgMg2">Configuring the module</a></span></dt><dt><span class="section"><a href="#mg2menu">Adding mGallery2 to your Zikula menu</a></span></dt><dt><span class="section"><a href="#userGroupSync">User and Group Synchronization</a></span></dt></dl></dd></dl></dd><dt><span class="chapter"><a href="#id2453940">2. mGallery2 Blocks</a></span></dt><dd><dl><dt><span class="section"><a href="#id2453986">Random Block</a></span></dt><dt><span class="section"><a href="#blkSpecific">Specific Block</a></span></dt><dt><span class="section"><a href="#blkSidebar">Sidebar Block</a></span></dt></dl></dd><dt><span class="chapter"><a href="#xformHook.link">3. The Transform Hook</a></span></dt><dd><dl><dt><span class="section"><a href="#activateXform">Activating the transform hook</a></span></dt><dt><span class="section"><a href="#chHTMLConfig">Zikula HTML Options</a></span></dt><dt><span class="section"><a href="#mg2syntax">General tag syntax</a></span></dt><dt><span class="section"><a href="#mg2Options">Transform Hook Options</a></span></dt><dd><dl><dt><span class="section"><a href="#id2454969"><span class="emphasis"><em>itemID</em></span> - The album or image id</a></span></dt><dt><span class="section"><a href="#id2454995"><span class="emphasis"><em>show</em></span> - How to show the image</a></span></dt><dt><span class="section"><a href="#id2455111"><span class="emphasis"><em>maxsize</em></span> - Maximum size of a full-sized
+        image</a></span></dt><dt><span class="section"><a href="#id2455148"><span class="emphasis"><em>type</em></span> - The type of imageblock to
+        show</a></span></dt><dt><span class="section"><a href="#id2455435"><span class="emphasis"><em>aframe</em></span> - Album Frame</a></span></dt><dt><span class="section"><a href="#id2455462"><span class="emphasis"><em>iframe</em></span> - Image Frame</a></span></dt><dt><span class="section"><a href="#id2455488"><span class="emphasis"><em>frame</em></span> - Image and Album Frame</a></span></dt><dt><span class="section"><a href="#id2455523"><span class="emphasis"><em>class</em></span> - CSS class</a></span></dt><dt><span class="section"><a href="#id2455588"><span class="emphasis"><em>n</em></span> - Number of images</a></span></dt></dl></dd><dt><span class="section"><a href="#id2455636">itemId and block types</a></span></dt><dt><span class="section"><a href="#id2455652">Escaping mg2 tags</a></span></dt></dl></dd><dt><span class="chapter"><a href="#chG2mage">4. Using g2Image with mGallery2 and Scribite</a></span></dt><dd><dl><dt><span class="section"><a href="#g2ImageReqs">Requirements</a></span></dt><dt><span class="section"><a href="#g2ImageInstall">Install and configure g2image files</a></span></dt><dt><span class="section"><a href="#chOpenBasedir">g2Image and OpenBasedir</a></span></dt><dt><span class="section"><a href="#id2456186">Updating Scribite</a></span></dt></dl></dd><dt><span class="chapter"><a href="#id2456337">5. Support</a></span></dt></dl></div><div class="list-of-figures"><p><b>List of Figures</b></p><dl><dt>1.1. <a href="#id2453491">Main Module Configuration</a></dt></dl></div><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a name="ch1-install"></a>Chapter 1. Installation</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#reqs">Requirements</a></span></dt><dt><span class="section"><a href="#g2inst">Install Gallery2</a></span></dt><dd><dl><dt><span class="section"><a href="#doubleDoubleNotes">Gallery2 2.2.1 (Double-Double) Notes</a></span></dt></dl></dd><dt><span class="section"><a href="#mg2Install">Installing mGallery2</a></span></dt><dd><dl><dt><span class="section"><a href="#mg2inst">Install the module</a></span></dt><dt><span class="section"><a href="#cfgMg2">Configuring the module</a></span></dt><dt><span class="section"><a href="#mg2menu">Adding mGallery2 to your Zikula menu</a></span></dt><dt><span class="section"><a href="#userGroupSync">User and Group Synchronization</a></span></dt></dl></dd></dl></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="reqs"></a>Requirements</h2></div></div></div><p>To install mGallery2 version .02, you must be running the
+      following:</p><div class="itemizedlist"><ul type="disc"><li><p><span class="emphasis"><em>Zikula .764</em></span> - Download it at <a href="http://www.Zikula.com/" target="_top">http://www.Zikula.com/</a></p></li><li><p><span class="emphasis"><em>Gallery2 2.1.2</em></span> (or higher) installed and
+          working - Download at <a href="???" target="_top">http://gallery.menalto.com</a></p></li><li><p>Image Block module installed and activated in Gallery2</p></li><li><p>Image Frame module installed and activated in Gallery2</p></li></ul></div><p>You may find that it works with earlier versions but if you want
+      support it will be difficult for me to debug. We are currently working
+      on updates to make it compatible with Zikula .8</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="g2inst"></a>Install Gallery2</h2></div></div></div><p>Use the gallery documentation to install Gallery2 standalone on
+      your web site. Gallery can be installed anywhere on your website. Just
+      make a note of the base directory - the physical location of the gallery
+      files - and the URI of the Gallery2 web site - it's path from the web
+      root.</p><p>For instance, on a UNIX system, if your web site's root is located
+      at <code class="filename">/home/apache/htdocs</code> and you install the Gallery2
+      files in <code class="filename">/home/apache/htdocs/gallery2</code>, your base
+      directory would be <code class="filename">/home/apache/htdocs/gallery2</code> and
+      your Gallery2 URI would be <code class="filename">/gallery2</code>. The same
+      applies on a Windows system. If your web root is located at
+      <code class="filename">d:\webroot\</code> and you install Gallery2 files in
+      <code class="filename">d:\webroot\gallery2</code>, your base directory is
+      <code class="filename">d:\webroot\gallery2</code> and your Gallery2 URI is
+      <code class="filename">/gallery2</code>.</p><p>Once Gallery2 is installed, go into the site administration and
+      click on the modules link in the sidebar. Look in the Blocks section of
+      the modules admin and make sure the Image Block plugin is installed and
+      active. Look in the Display section of the modules admin and make sure
+      the ImageFrame module is installed and active.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a name="doubleDoubleNotes"></a>Gallery2 2.2.1 (Double-Double) Notes</h3></div></div></div><p>Gallery 2.2.1 incorporates the Smarty templating engine and has
+        several places in the code where it explicitly calls its own plugins.
+        This causes some problems with Zikula's own Smarty engine, so
+        running Gallery 2.2.1 will require some code editing.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="albumselect"></a>albumselect module</h4></div></div></div><p>To correct the album select module's Smarty overlap, do the
+          following:</p><div class="orderedlist"><ol type="1"><li><p>In your Gallery2 installation folder, navigate to the
+              <code class="filename">modules/albumselect</code> folder</p></li><li><p>Open the <code class="filename">Callbacks.inc</code> file in an
+              editor. Save a copy of the file for safety</p></li><li><p>Go to line 136, which should read:</p><pre class="programlisting">GalleryCoreApi::requireOnce('lib/smarty/plugins/modifier.escape.php');</pre></li><li><p>Add a line before this line that reads:</p><pre class="programlisting">if(!function_exists("smarty_modifier_escape")) {</pre></li><li><p>Add a line after 136 that reads:</p><pre class="programlisting">}</pre></li><li><p>Save and exit the file</p></li></ol></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="galleryTemplateAdapter"></a>GalleryTemplateAdapter</h4></div></div></div><p>To correct the album select module's Smarty overlap, do the
+          following:</p><div class="orderedlist"><ol type="1"><li><p>In your Gallery2 installation folder, navigate to the
+              <code class="filename">modules/core/classes</code> folder</p></li><li><p>Open the <code class="filename">GalleryTemplateAdapter.class</code>
+              file in an editor. Save a copy of the file for safety.</p></li><li><p>Go to line 241, which should read:</p><pre class="programlisting">GalleryCoreApi::requireOnce('lib/smarty/plugins/modifier.escape.php');</pre></li><li><p>Add a line before this line that reads:</p><pre class="programlisting">if(!function_exists("smarty_modifier_escape")) {</pre></li><li><p>Add a line after 241 that reads:</p><pre class="programlisting">}</pre></li><li><p>Go to line 726, which should read:</p><pre class="programlisting">GalleryCoreApi::requireOnce('lib/smarty/plugins/function.debug.php');</pre></li><li><p>Add a line before this line that reads:</p><pre class="programlisting">if(!function_exists("smarty_function_debug")) {</pre></li><li><p>Add a line after 726 that reads:</p><pre class="programlisting">}</pre></li><li><p>Go to line 1014, which should read:</p><pre class="programlisting">GalleryCoreApi::requireOnce('lib/smarty/plugins/modifier.escape.php');</pre></li><li><p>Add a line after this line that reads:</p><pre class="programlisting">if(!function_exists("smarty_modifier_escape")) {</pre></li><li><p>Add a line after 1014 that reads:</p><pre class="programlisting">}</pre></li><li><p>Save and exit the file</p></li></ol></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="doubleValidate"></a>Validate Changes</h4></div></div></div><p>Open your Gallery to make sure it still works. If it doesn't
+          restore the two files and try again. If it still doesn't work, ask
+          around on the mGallery2 forums.</p></div></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="mg2Install"></a>Installing mGallery2</h2></div></div></div><p>This section will describe how to install the module into your
+      Zikula site. It will also cover adding the module to the standard
+      Zikula menu and how to set up user and Group synchronization.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a name="mg2inst"></a>Install the module</h3></div></div></div><p>The mGallery2 package consists of the module files, located in
+        the mGallery2 folder, and two core Zikula files for PN764, one
+        located in the <code class="filename">User/</code> folder and the other in the
+        <code class="filename">Groups/</code> folder. To perform the mGallery2
+        install:</p><div class="orderedlist"><ol type="1"><li><p>Copy the <code class="filename">mGallery2</code> folder into your
+            Zikula <code class="filename">modules/</code> folder</p></li><li><p>Go to your Zikula Administration Panel</p></li><li><p>Click on the system tab</p></li><li><p>Click on modules</p></li><li><p>Make sure All is selected in the drop-down list beside the
+            alphabetical filter menu links</p></li><li><p>Click on the Regenerate link in the administration
+            links</p></li><li><p>After Zikula regenerates the modules, find mGallery2 in
+            the list</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3><p>Click on the M link above the modules table to make it
+              easier to find. It should have a status of Uninitialized)</p></div></li><li><p>Click on Initialize in the module's actions</p></li><li><p>The status of the module should now be Inactive</p></li><li><p>Click on Activate in the module's actions</p></li></ol></div><p>The module should now be installed.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a name="cfgMg2"></a>Configuring the module</h3></div></div></div><p>Now that the module is installed, it will need to be configured
+        in order to access your installed Gallery2. This is where you will use
+        the Base Directory and Gallery2 URI that you noted during Gallery2
+        installation. To configure the module, click on the Admin link in the
+        module's actions or click on the 3rd Party tab in your Zikula Admin
+        Panel and click the mGallery2 icon.</p><div align="left"><a name="mg2icon"></a><img src="images/mg2-icon.jpg" align="left"></div><p>There are two sections in the module's administration panel. The
+        first section, Main Module Configuration, sets up the parameters for
+        communicating with Gallery2. The screenshot below shows this section.
+        You will notice that there are two lines in red. Before the module is
+        configured, they will say that modules are disabled in the Gallery2
+        core, but they ar inaccurate until the module is set up properly. Here
+        is the screenshot:</p><div class="figure"><a name="id2453491"></a><p class="title"><b>Figure 1.1. Main Module Configuration</b></p><div><a name="mg2mainConfigBlank"></a><img src="images/main-config-blank.jpg" alt="Main Module Configuration"></div></div><p>The first field is Base Directory, which is the physical path to
+        the Gallery2 installation files. This is the path from the root of the
+        filesystem. On a UNIX machine, it might be something like
+        <code class="filename">/webroot/htdocs/gallery2</code>. On a Windows machine,
+        it might be something like
+        <code class="filename">d:\webroot\gallery2</code>.The second field is Gallery2
+        URI, which is the path from the web root to the Gallery2 files. Here's
+        an example. The web root is where your web server looks for documents.
+        Let's say you installed Zikula into a folder called c:\web\Zikula
+        or /web/Zikula and you set your web root to this folder in apache.
+        You access your Zikula site at this URI: <code class="filename">/</code>.
+        Now, let's say you install gallery2 into a folder called
+        <code class="filename">c:\web\Zikula\g2\ or /web/Zikula/g2/</code> within
+        the Zikula folder. The URI for Gallery2 would be
+        <code class="filename">/g2</code>. Let's say, on the other hand, that you
+        installed Gallery2 into a different folder altogether, like
+        d:\gallery2 or <code class="filename">/apps/gallery2</code>. In apache, you set
+        this folder up to map to <code class="filename">/Gallery2</code>. Now your URI
+        is <code class="filename">/Gallery2</code>.</p><p>Once you have these two fields set up correctly, click on the
+        <span class="emphasis"><em>Update</em></span> button at the bottom of the screen. If you
+        have set Gallery up correctly, when the screen refreshes, the module
+        status lines should both be in green as in the screenshot
+        below:</p><div><a name="mg2mainConfigGreen"></a><img src="images/main-config-green.jpg"></div><p>If these lines are still red, it means you have either forgotten
+        to install and activate the modules in Gallery2 or you have an
+        incorrect Base directory, Gallery URI, or both. The mGallery2 module
+        will still work without the two Gallery2 modules, but frames will not
+        be available. mGallery2 will not work without a correct Base Directory
+        and Gallery URI. The second section in the main module administration
+        is the default parameters for the transform hook. The settings look
+        like this.</p><div><a name="mg2adminScreenTransform"></a><img src="images/admin-screen-transform.jpg"></div><p>These settings will take affect when no options are used in a
+        transform hook tag. You can choose to show the title of the photo, the
+        owner of the photo, the date of the photo (from EXIF data), or the
+        number of views from within Gallery2. You can also choose to show the
+        default full-sized image instead of a thumbnail and you can set the
+        maximum size of the full-sized image or the thumbnail. The two
+        dropdown boxes determine what frame will be used by default on albums
+        and images. The link underneath the settings navigates to a contact
+        sheet with all of the available frames displayed on a photo. All of
+        these options are explained in more detail in the section <a href="#xformHook.link">The Transform Hook</a>.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a name="mg2menu"></a>Adding mGallery2 to your Zikula menu</h3></div></div></div><p>The standard Zikula installation comes with a side block menu.
+        It can be accessed in the Zikula administration panel under
+        Blocks/Main Menu. It's easy to add a link to your gallery in the
+        Zikula menu block. Follow these steps to do it:</p><div class="orderedlist"><ol type="1"><li><p>Go to your Zikula Administration Panel</p></li><li><p>Click on the System tab if you're not there already</p></li><li><p>Click on the Blocks icon</p></li><li><p>Look for the Main Menu block and click on its Edit
+            option</p></li><li><p>In the Content section, look for or create an empty
+            line</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3><p>If you want it to appear after a specific item, check the
+              "Insert blank after" check box for that item. Click the Update
+              button. Edit the Main Menu again. You should see a new blank
+              line where you wanted it.</p></div></li><li><p>Type anything you want in the Title and Description
+            fields</p></li><li><p>In the URL field, type {mGallery2}</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>This tells Zikula to create a URL to the mGallery2
+              module</p></div></li><li><p>Click the Update button</p></li><li><p>You should now see your gallery link in the menu. Click it
+            to test.</p></li></ol></div><p>If you want to create links to specific albums, just go to your
+        gallery and click on the album. When you have the desired album in the
+        browser, copy the URL from the browser's navigation bar and paste it
+        into the menu item's URL field instead of {mGallery2}.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a name="userGroupSync"></a>User and Group Synchronization</h3></div></div></div><p>mGallery2 can synchronize users and groups between Zikula and
+        Gallery2 in several ways. The first time a logged-in user clicks on
+        your Gallery2 link, a new user will be created in Gallery2 and mapped
+        to that Zikula userid. If you want all of your users to have
+        Gallery2 userid mappings, you can do it manually through the module's
+        administration menu or you can set up automatic user and group
+        synchronization. If you want to get user automatic synchronization
+        working, you must modify two core Zikula files to enable the
+        mGallery hooks to work correctly. To do so:</p><div class="orderedlist"><ol type="1"><li><p>Make a copy of the core file
+            <code class="filename">modules/User/admin.php</code></p></li><li><p>Copy <code class="filename">User/admin.php</code> into
+            <code class="filename">modules/User</code></p></li><li><p>Make a copy of the core file
+            <code class="filename">modules/Groups/pnadminapi.php</code></p></li><li><p>Copy <code class="filename">Groups/pnadminapi.php</code> into
+            <code class="filename">modules/Groups</code></p></li><li><p>Go to your Zikula Administration Panel</p></li><li><p>Click on the system tab if you're not there already</p></li><li><p>Click on the Modules icon</p></li><li><p>Find the User module</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3><p>Click on the U link above the modules table to make it
+              easier to find</p></div></li><li><p>Click on the Hooks action for the module</p></li><li><p>Check the checkbox next to <span class="emphasis"><em>Activate mgallery2 for
+            this module</em></span></p></li><li><p>Click the <span class="emphasis"><em>Update</em></span> button</p></li><li><p>Find the Groups module</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3><p>Click on the G link above the modules table to make it
+              easier to find</p></div></li><li><p>Click on the Hooks action for the module</p></li><li><p>Check the checkbox next to <span class="emphasis"><em>Activate mgallery2 for
+            this module</em></span></p></li><li><p>Click the <span class="emphasis"><em>Update</em></span> button</p></li></ol></div><p>For small sites, automatic synchronization isn't necessary as
+        users will be created when they enter the gallery, but for large or
+        high-traffic sites, on-the-fly creation could cause some overhead.
+        Automatic synchronization creates and deletes the user or group using
+        hooks on the appropriate module, so the changes happen in Gallery2 at
+        the same time the changes happen in Zikula.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>From thaughbear - The user/group synchronization uses Zikula
+          as the master and G2 as the slave. It works exactly as I want it to
+          work. My Zikula and Gallery2 users are both called Admin and these
+          are the only admin users. If you want it to work any other way
+          submit a feature request which I may or may not implement.</p></div></div></div></div><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a name="id2453940"></a>Chapter 2. mGallery2 Blocks</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#id2453986">Random Block</a></span></dt><dt><span class="section"><a href="#blkSpecific">Specific Block</a></span></dt><dt><span class="section"><a href="#blkSidebar">Sidebar Block</a></span></dt></dl></div><p>There are three types of blocks in mGallery2. Two of them are used
+    to display images and one is used to move the Gallery2 sidebar out of the
+    embedded gallery and into Zikula's block system. The block names
+    are:</p><div class="itemizedlist"><ul type="disc"><li><p>mGallery2/Random - Show a random image</p></li><li><p>mGallery2/Specific - Show a specific image</p></li><li><p>mGallery2/Sidebar - Show the Gallery2 sidebar</p></li></ul></div><p>The Random and specific blocks are both used to show an image (or
+    images) in a block. In future versions, these blocks will be combined into
+    one block that can perform both functions, as well as many others (recent
+    images, most viewed image, etc.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2453986"></a>Random Block</h2></div></div></div><p>The random block is a sidebar (or center) block that has the
+      ability to display an image or several images in your theme's block
+      content. It is a standard Zikula block that can be added through the
+      Blocks administration menu. To add a block:</p><div class="orderedlist"><ol type="1"><li><p>Go to your Zikula administration panel</p></li><li><p>Click on the system tab if you're not already there</p></li><li><p>Click on the Bocks icon</p></li><li><p>Click on the <span class="emphasis"><em>New Block</em></span> link in the Blocks
+          Administration link menu</p></li><li><p>The standard block options configuration screen will
+          appear</p></li><li><p>In the <span class="emphasis"><em>Title</em></span> field, name the block
+          anything you want - e.g. - Random Image</p></li><li><p>Select <span class="emphasis"><em>mGallery2/Random</em></span> from the
+          <span class="emphasis"><em>Block</em></span> dropdown field</p></li><li><p>Select whichever position you want from the
+          <span class="emphasis"><em>Position</em></span> dropdown</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>Your theme must support blocks for whichever position you
+            select. If the theme doesn't have right blocks and you select the
+            right position, the block will not display unless you edit your
+            theme to support the right block or choose a supported
+            position.</p></div></li><li><p>Select whether or not you want the Block to be
+          <span class="emphasis"><em>Collapsible</em></span>. If the theme template supports it,
+          this will show a clickable icon in the corner of the block that will
+          allow the user to collapse the block. This defaults to
+          <span class="emphasis"><em>Yes</em></span>.</p></li><li><p>Select the <span class="emphasis"><em>Default State </em></span>for the
+          block</p></li><li><p>Select the <span class="emphasis"><em>Language</em></span> of the block. The
+          current translations are en-US and deu</p></li><li><p>Click the <span class="emphasis"><em>Update</em></span> button</p></li><li><p>Now you will see specific options for the
+          <span class="emphasis"><em>mGallery2/Random</em></span> block</p></li><li><p><span class="emphasis"><em>Show Title </em></span>will display the title of the
+          image in the block, if selected.</p></li><li><p><span class="emphasis"><em>Show Owner</em></span> will display the owner of the
+          image in the block, if selected</p></li><li><p><span class="emphasis"><em>Show Views</em></span> will show the number of views
+          in the block, if selected</p></li><li><p><span class="emphasis"><em>Show Date</em></span> will show the EXIF date of the
+          image in the block, if selected</p></li><li><p>The <span class="emphasis"><em>Number of Images</em></span> field determines how
+          many images will be displayed in the block. There is no maximum, so
+          put something sane in the field.</p></li><li><p>The <span class="emphasis"><em>Maximum Image Size (width)</em></span> field will
+          determine the maximum size, in pixels, of the image in the
+          block</p></li><li><p>Select a frame for album objects in the <span class="emphasis"><em>Album
+          Frame</em></span> dropdown box</p></li><li><p>Select a frame for image objects in the <span class="emphasis"><em>Image
+          Frame</em></span> dropdown box</p></li><li><p>The last option is another standard Zikula block option that
+          really isn't relevant to the mGallery2. Just leave the
+          <span class="emphasis"><em>Refresh time for block</em></span> setting at its default
+          <span class="emphasis"><em>One hour</em></span> setting</p></li><li><p>Once again, click the <span class="emphasis"><em>Update</em></span>
+          button</p></li></ol></div><p>The block is now available. If you put it in a position that can
+      be seen from the administration template, you should see it now.
+      Otherwise, go to home page or another page with block support for the
+      position you chose. You should now see your block.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>Using the Maximum Size parameter and square frames (Gallery
+        2.2.1+) you can create a grid of images in your block. Set the number
+        of images to four and experiment with the Maximum size parameter until
+        two images fit on a row. The square frame is necesary to keep the
+        width uniform.</p></div><div align="left"><a name="mg2randomBlockGrid"></a><img src="images/random-block-grid.jpg" align="left"></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="blkSpecific"></a>Specific Block</h2></div></div></div><p>The specific block is a holdover from the original mGallery2
+      source and has not been touched since it was written. It allows you to
+      show a specific image in a block, but no options are enabled for it. The
+      block is hard-coded to display the title and the date of the image. This
+      block uses the image path instead of the image id when specifying an
+      image. The best way to find the image path is to go the image within
+      Gallery2 and click <span class="emphasis"><em>Edit Photo</em></span>. The path will be
+      displayed on the <span class="emphasis"><em>General</em></span> tab under the
+      <span class="emphasis"><em>Name</em></span> section. To add a specific image
+      block:</p><div class="orderedlist"><ol type="1"><li><p>Go to your Zikula administration panel</p></li><li><p>Click on the system tab if you're not already there</p></li><li><p>Click on the Bocks icon</p></li><li><p>Click on the <span class="emphasis"><em>New Block</em></span> link in the
+            Blocks Administration link menu</p></li><li><p>The standard block options configuration screen will
+            appear</p></li><li><p>In the <span class="emphasis"><em>Title</em></span> field, name the block
+            anything you want - e.g. - Dragon</p></li><li><p>Select <span class="emphasis"><em>mGallery2/Specific</em></span> from the
+            <span class="emphasis"><em>Block</em></span> dropdown field</p></li><li><p>Select whichever position you want from the
+            <span class="emphasis"><em>Position</em></span> dropdown</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>Your theme must support blocks for whichever position you
+              select. If the theme doesn't have right blocks and you select
+              the right position, the block will not display unless you edit
+              your theme to support the right block or choose a supported
+              position.</p></div></li><li><p>Select whether or not you want the Block to be
+            <span class="emphasis"><em>Collapsible</em></span>. If the theme template supports
+            it, this will show a clickable icon in the corner of the block
+            that will allow the user to collapse the block. This defaults to
+            <span class="emphasis"><em>Yes</em></span>.</p></li><li><p>Select the <span class="emphasis"><em>Default State </em></span>for the
+            block</p></li><li><p>Select the <span class="emphasis"><em>Language</em></span> of the block. The
+            current translations are en-US and deu</p></li><li><p>Click the <span class="emphasis"><em>Update</em></span> button</p></li><li><p>Now you will see specific options for the
+            <span class="emphasis"><em>mGallery2/Specific</em></span> block</p></li><li><p>Type in the image's path in the <span class="emphasis"><em>Image
+            path</em></span> field, for instance /album1/dragon.jpg</p></li><li><p>The last option is another standard Zikula block option
+            that really isn't relevant to the mGallery2. Just leave the
+            <span class="emphasis"><em>Refresh time for block</em></span> setting at its default
+            <span class="emphasis"><em>One hour</em></span> setting</p></li><li><p>Once again, click the <span class="emphasis"><em>Update</em></span>
+            button</p></li></ol></div><p>The block is now available. If you put it in a position
+      that can be seen from the administration template, you should see it
+      now. Otherwise, go to the home page or another page with block support
+      for the position you chose. You should now see your block.</p><div><a name="mg2blockSpecific"></a><img src="images/block-specific.jpg"></div><p>This block and the Random block will evenually be integrated into
+      a multi-block that can generate different types of blocks with all of
+      the options enabled.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="blkSidebar"></a>Sidebar Block</h2></div></div></div><p>The Sidebar block, unlike the Random and Specific block, does not
+      display images on your site. Instead, it is designed to take the
+      embedded Gallery2 sidebar out of the modules's image display area and
+      embed it into a block. The Gallery2 sidebar is a collection of links
+      that allow administrators to manage images and albums and also lets
+      regular users search the gallery, print photos to online printing
+      companies, and view slideshows, among other things. The sidebar will
+      only show when the mGallery2 module is active and it will only have
+      content if the <span class="emphasis"><em>Sidebar Block</em></span> setting is selected in
+      mGallery2's administrative settings. If this setting is not selected,
+      the title bar will show, but the block will be empty and the sidebar
+      will be display within the embedded gallery page. To install:</p><div class="orderedlist"><ol type="1"><li><p>Go to your Zikula administration panel</p></li><li><p>Click on the system tab if you're not already there</p></li><li><p>Click on the Bocks icon</p></li><li><p>Click on the <span class="emphasis"><em>New Block</em></span> link in the Blocks
+          Administration link menu</p></li><li><p>The standard block options configuration screen will
+          appear</p></li><li><p>In the <span class="emphasis"><em>Title</em></span> field, name the block
+          anything you want - e.g. - G2 Sidebar</p></li><li><p>Select <span class="emphasis"><em>mGallery2/Sidebar</em></span> from the
+          <span class="emphasis"><em>Block</em></span> dropdown field</p></li><li><p>Select whichever position you want from the
+          <span class="emphasis"><em>Position</em></span> dropdown</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>Your theme must support blocks for whichever position you
+            select. If the theme doesn't have right blocks and you select the
+            right position, the block will not display unless you edit your
+            theme to support the right block or choose a supported
+            position.</p></div></li><li><p>Select whether or not you want the Block to be
+          <span class="emphasis"><em>Collapsible</em></span>. If the theme template supports it,
+          this will show a clickable icon in the corner of the block that will
+          allow the user to collapse the block. This defaults to
+          <span class="emphasis"><em>Yes</em></span>.</p></li><li><p>Select the <span class="emphasis"><em>Default State </em></span>for the
+          block</p></li><li><p>Select the <span class="emphasis"><em>Language</em></span> of the block. The
+          current translations are en-US and deu</p></li><li><p>Click the <span class="emphasis"><em>Update</em></span> button</p></li><li><p>There are no specific options for the
+          <span class="emphasis"><em>mGallery2/Sidebar</em></span> block</p></li><li><p>The last option is another standard Zikula block option that
+          really isn't relevant to the mGallery2. Just leave the
+          <span class="emphasis"><em>Refresh time for block</em></span> setting at its default
+          <span class="emphasis"><em>One hour</em></span> setting</p></li><li><p>Once again, click the <span class="emphasis"><em>Update</em></span>
+          button.</p></li></ol></div><p>The block is now available. If you put it in a position that can
+      be seen from the administration template, you should see it now.
+      Otherwise, go to the home page or another page with block support for
+      the position you chose. You should now see your block.</p><div align="left"><img src="images/block-sidebar.jpg" align="left"></div><p>Hopefully. I'll have some time to experiment with styling the
+      block in the future. The contents of the block can be customized within
+      the Gallery2 Site Admin. Just edit the G2 theme and pick the items you
+      want in the sidebar.</p></div></div><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a name="xformHook.link"></a>Chapter 3. The Transform Hook</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#activateXform">Activating the transform hook</a></span></dt><dt><span class="section"><a href="#chHTMLConfig">Zikula HTML Options</a></span></dt><dt><span class="section"><a href="#mg2syntax">General tag syntax</a></span></dt><dt><span class="section"><a href="#mg2Options">Transform Hook Options</a></span></dt><dd><dl><dt><span class="section"><a href="#id2454969"><span class="emphasis"><em>itemID</em></span> - The album or image id</a></span></dt><dt><span class="section"><a href="#id2454995"><span class="emphasis"><em>show</em></span> - How to show the image</a></span></dt><dt><span class="section"><a href="#id2455111"><span class="emphasis"><em>maxsize</em></span> - Maximum size of a full-sized
+        image</a></span></dt><dt><span class="section"><a href="#id2455148"><span class="emphasis"><em>type</em></span> - The type of imageblock to
+        show</a></span></dt><dt><span class="section"><a href="#id2455435"><span class="emphasis"><em>aframe</em></span> - Album Frame</a></span></dt><dt><span class="section"><a href="#id2455462"><span class="emphasis"><em>iframe</em></span> - Image Frame</a></span></dt><dt><span class="section"><a href="#id2455488"><span class="emphasis"><em>frame</em></span> - Image and Album Frame</a></span></dt><dt><span class="section"><a href="#id2455523"><span class="emphasis"><em>class</em></span> - CSS class</a></span></dt><dt><span class="section"><a href="#id2455588"><span class="emphasis"><em>n</em></span> - Number of images</a></span></dt></dl></dd><dt><span class="section"><a href="#id2455636">itemId and block types</a></span></dt><dt><span class="section"><a href="#id2455652">Escaping mg2 tags</a></span></dt></dl></div><p>The mGallery2 transform hook is a tag-based transform hook similar
+    to pn_bbcode. It uses tags that begin with [mg2 to insert gallery images
+    into your site. When the transform hook encounters a tag, it replaces it
+    inline with the HTML of an image block. The tag can be very simple,
+    pointing to a single image, or complex, rendering multiple random images
+    from a specific gallery.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="activateXform"></a>Activating the transform hook</h2></div></div></div><p>The transform hook can be activated for any module. Since the hook
+      inserts html that will display an image, you should only activate this
+      hook for modules that display something, such as News. To activate the
+      hook for a module, follow these steps:</p><div class="orderedlist"><ol type="1"><li><p>Go to your Zikula Administration Panel</p></li><li><p>Click on the system tab if you're not there already</p></li><li><p>Click on the Modules icon</p></li><li><p>Find the module you would like to hook</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3><p>Use the alphabet links above the modules table to make it
+            easier to find your module</p></div></li><li><p>Click on the Hooks action for the module</p></li><li><p>Check the checkbox next to <span class="emphasis"><em>Activate mgallery2 for
+          this module</em></span></p></li><li><p>Click the <span class="emphasis"><em>Update</em></span> button</p></li></ol></div><p>To test the hook, go to the module you've hooked and add some
+      content with an mGallery2 trasform hook tag. See the next sections below
+      for more information on the syntax and options.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="chHTMLConfig"></a>Zikula HTML Options</h2></div></div></div><p>In order for the images to display correctly within the News
+      module, or any other module, you will need to edit your HTML Options in
+      Zikula's general site settings. The following HTML options must be
+      <span class="emphasis"><em>Allowed with attributes</em></span>.</p><div class="itemizedlist"><ul type="disc"><li><p>&lt;div&gt;</p></li><li><p>&lt;h4&gt; - this is used by the image title caption</p></li><li><p>&lt;p&gt; - this is used by the owner and date captions</p></li></ul></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="mg2syntax"></a>General tag syntax</h2></div></div></div><p>The mGallery2 transform hook tag, in its most basic form is the
+      prefix mg2, followed by a colon, followed by an image or album id. The
+      tag is enclosed in brackets like so:</p><pre class="programlisting">[mg2:<span class="emphasis"><em>imageId</em></span>]</pre><p>This example inserts a block of HTML that is returned from the
+      Gallery2 Image Block module and inserts it inline into your content.
+      There are many options in the Image Block module and the transform hook
+      tries to take advantage of them all. the next section will discuss the
+      options and give examples of their use</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="mg2Options"></a>Transform Hook Options</h2></div></div></div><p>The hook supports the following imageblock options:</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a name="id2454969"></a><span class="emphasis"><em>itemID</em></span> - The album or image id</h3></div></div></div><p>This parameter is not specified in the tag. It follows the
+        prefix (mg2:) and consists of an integer that is a valid image or
+        album id in Gallery2.</p><pre class="programlisting">[mg2:21]</pre><p>This example will show the image with the gallery image id of
+        21. If it is an album, it will show the album highlight. Without
+        arguments, this will show the image using the defaults defined in the
+        mGallery2</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a name="id2454995"></a><span class="emphasis"><em>show</em></span> - How to show the image</h3></div></div></div><p>This parameter takes a pipe-delimited list of options that
+        determine what will be shown with the image. Options include title,
+        owner, date, views, and fullSize. None of these options is required.
+        The options will be described below after the example.</p><pre class="programlisting">[mg2:41 show=owner|date]</pre><p>This
+        example will show the image with owner and date information pulled
+        from Gallery2</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455016"></a><span class="emphasis"><em>title</em></span> - The title of the image</h4></div></div></div><p>This show option adds a caption to the image. The caption
+          cannot be specified. It will read the title from Gallery2.</p><pre class="programlisting">[mg2:11 show=title]</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455035"></a><span class="emphasis"><em>owner</em></span> - The owner of the image</h4></div></div></div><p>This show option adds a caption to the image with the image
+          owner's name.</p><pre class="programlisting">[mg2:10 show=owner]</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455052"></a><span class="emphasis"><em>date</em></span> - The date information from the
+          image</h4></div></div></div><p>This show option adds a caption to the image with the image's
+          date information.</p><pre class="programlisting">[mg:22 show=date]</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455070"></a><span class="emphasis"><em>fullSize</em></span> - Show the image
+          fullSize</h4></div></div></div><p>Normally, the imageblock plugin, which the transform hook
+          utilizes, returns the thumbnail for an image, but this show option
+          tells Gallery2 to return a full-sized image. The size of the image
+          can be controlled with the maxSize option.</p><pre class="programlisting">[mg2:2 show=fullSize]</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455091"></a><span class="emphasis"><em>views</em></span> - Show the number of views</h4></div></div></div><p>This show option adds a caption to the image with the number
+          of views the image has set. This number is determined by
+          Gallery2.</p><pre class="programlisting">[mg2:445 show=views]</pre></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a name="id2455111"></a><span class="emphasis"><em>maxsize</em></span> - Maximum size of a full-sized
+        image</h3></div></div></div><p>This parameter sets the maximum size in pixels of the longest
+        side of the image. If it is used in conjunction with show=fullSize it
+        will limit the size of the full-sized images returned. Without the
+        show=fullSize option, it will limit the size of thumbnails.</p><pre class="programlisting">[mg2:37 show=fullSize|views|owner|title maxSize=800]</pre><p>This example renders a full-sized image with a maximum height or
+        width of 800 pixels. It also includes captions with owner, title, and
+        views.</p><pre class="programlisting">[mg2:22 maxSize=50]</pre><p>This example limits the height or width of the thumbnail image
+        to 50 pixels.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a name="id2455148"></a><span class="emphasis"><em>type</em></span> - The type of imageblock to
+        show</h3></div></div></div><p>This parameter determines the type of imageblock to show. The
+        possible options are specificImage, randomImage, dailyImage,
+        weeklyImage, monthlyImage, dailyAlbum, weeklyAlbum, monthlyAlbum,
+        viewedImage, randomAlbum, recentAlbum, viewedAlbum. Only one option is
+        permitted.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="specificImage"></a><span class="emphasis"><em>specificImage</em></span> - Show a specific
+          image</h4></div></div></div><p>This block type shows a specific image by image id. This is
+          the default block type.</p><pre class="programlisting">[mg2:22 type=specificImage]</pre><p>This example shows the image with an id of 22.</p><pre class="programlisting">[mg2:22]</pre><p>Since specificImage is the default option, this also shows the
+          image with an id of 22.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455198"></a><span class="emphasis"><em>randomImage</em></span> - Show a random
+          image</h4></div></div></div><p>This block type will show a random image from the album
+          specified in the album id. To choose an image from the entire
+          gallery, specify the root gallery or an d of 0.</p><pre class="programlisting">[mg2:47 type=randomImage]</pre><p>This example will show a random image from the album with an
+          id of 47.</p><pre class="programlisting">[mg2:0 type=randomImage]</pre><p>This example will show a random image from the entire
+          gallery</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455230"></a><span class="emphasis"><em>dailyImage</em></span> - Show the daily
+          image</h4></div></div></div><p>This block type will show the daily image that is determined
+          by Gallery2. This image changes daily. Use an itemId of 0 for this
+          type.</p><pre class="programlisting">[mg2:0 type=dailyImage]</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455249"></a><span class="emphasis"><em>weeklyImage</em></span> - Show the weekly
+          image</h4></div></div></div><p>This block type will show the weekly image that is determined
+          by Gallery2. This image changes weekly. Use an itemId of 0 for this
+          type.</p><pre class="programlisting">[mg2:0 type=weeklyImage]</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455268"></a><span class="emphasis"><em>monthlyImage</em></span> - Show the monthly
+          image</h4></div></div></div><p>This block type will show the monthly image that is determined
+          by Gallery2. This image changes monthly. Use an itemId of 0 for this
+          type.</p><pre class="programlisting">[mg2:0 type=monthlyImage]</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455288"></a><span class="emphasis"><em>dailyAlbum</em></span> - Show the daily
+          album</h4></div></div></div><p>This block type will show the highlighted photo of the daily
+          album that is determined by Gallery2. This album changes
+          daily.</p><pre class="programlisting">[mg2:0 type=dailyAlbum]</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455307"></a><span class="emphasis"><em>weeklyAlbum</em></span> - Show the weekly
+          album</h4></div></div></div><p>This block type will show the highlighted photo of the weekly
+          album that is determined by Gallery2. This album changes
+          weekly.</p><pre class="programlisting">[mg2:0 type=weeklyAlbum]</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455326"></a><span class="emphasis"><em>monthlyAlbum</em></span> - Show the monthly
+          album</h4></div></div></div><p>This block type will show the highlighted photo of the monthly
+          album that is determined by Gallery2. This album changes
+          monthly.</p><pre class="programlisting">[mg2:0 type=monthlyAlbum]</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455345"></a><span class="emphasis"><em>viewedImage</em></span> - Show the most viewed
+          image</h4></div></div></div><p>This block type will show the most viewed image from an album
+          identified by itemId. An itemID of 0 will choose from the entire
+          gallery.</p><pre class="programlisting">[mg2:24 type=viewdImage]</pre><p>This example will show the most viewed image from the album
+          with an id of 24</p><p></p><pre class="programlisting">[mg2:0 type-viewedImage]</pre><p>This example will show the most viewed image in the
+          gallery.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455379"></a><span class="emphasis"><em>randomAlbum</em></span> - Show a random
+          album</h4></div></div></div><p>This block type will show the highlighted photo from a random
+          album from the gallery.</p><pre class="programlisting">[mg2:0 type=randomAlbum]</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455397"></a><span class="emphasis"><em>recentAlbum</em></span> - Show the most recent
+          album</h4></div></div></div><p>This block type will show the highlighted photo from the most
+          recent album in the gallery.</p><pre class="programlisting">[mg2:0 type=recentAlbum]</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h4 class="title"><a name="id2455416"></a><span class="emphasis"><em>viewedAlbum</em></span> - Show the most viewed
+          album</h4></div></div></div><p>This block type will show the highlighted photo from the most
+          viewed album in the gallery.</p><pre class="programlisting">[mg2:0 type=viewedAlbum]</pre></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a name="id2455435"></a><span class="emphasis"><em>aframe</em></span> - Album Frame</h3></div></div></div><p>This parameter selects a frame from the imageframe module that
+        will be displayed around albums.</p><pre class="programlisting">[mg2:22 aframe=dots]</pre><p>This example will display the dots frame around the highlighted
+        photo from the album with an id of 22. If 22 is an image, it will use
+        the default item frame from the module's settings. To view the
+        different frames, click on the frame samples page in mGallery2's
+        module settings.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a name="id2455462"></a><span class="emphasis"><em>iframe</em></span> - Image Frame</h3></div></div></div><p>This parameter selects a frame from the imageframe module that
+        will be displayed around images.</p><pre class="programlisting">[mg2:4 iframe=shadow]</pre><p>This example will display the shadow frame around the image with
+        an id of 4. If 22 is an abum, it will use the default album frame from
+        the module's settings. To view the different frames, click on the
+        frame samples page in mGallery2's module settings.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a name="id2455488"></a><span class="emphasis"><em>frame</em></span> - Image and Album Frame</h3></div></div></div><p>This parameter can be used in place of the iframe and aframe
+        parameters to specify thhttpe frame for albums and images.</p><pre class="programlisting">[mg2:0 frame=gold type=randomAlbum]</pre><p>This example will display the gold frame around the random album
+        chosen by Gallery2 from the entire gallery.</p><p></p><pre class="programlisting">[mg2:0 frame=flicking type=viewedImage]</pre><p>This example will display the flicking frame around the most
+        viewed image in the gallery.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a name="id2455523"></a><span class="emphasis"><em>class</em></span> - CSS class</h3></div></div></div><p>This parameter selects the class that will be applied to the
+        imageblock's div. The options for this parameter are a list of
+        predefined divs:</p><div class="itemizedlist"><ul type="disc"><li><p><span class="emphasis"><em>left</em></span> - float left</p></li><li><p><span class="emphasis"><em>right</em></span> - float right</p></li><li><p><span class="emphasis"><em>center/centre</em></span> - center the image</p></li><li><p><span class="emphasis"><em>normal</em></span> - no styling</p></li></ul></div><pre class="programlisting">[mg2:44 class=left show=owner|date|title]</pre><p>This example will display the image with an id of 44 and float
+        the block left. The block will have owner, date, and title
+        captions.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a name="id2455588"></a><span class="emphasis"><em>n</em></span> - Number of images</h3></div></div></div><p>This parameter specifies the number of images to display. There
+        is no sanity checking on this parameter, so if you specify 100 images,
+        you will get 100 images. Be warned! f you specify the n parameter for
+        a <a href="#specificImage" title="specificImage - Show a specific
+          image">specificImage</a> type, only one
+        instance of the image will be displayed.</p><pre class="programlisting">[mg2:12 type=randomImage n=3 class=center]</pre><p>This example will display three random images from the album
+        with an id of 12 and center the images. Without captions, the images
+        will display inline.<em class="parameter"><code></code></em></p><p><em class="parameter"><code></code></em></p><pre class="programlisting">[mg2:12 type=randomImage n=3 class=center show=title]</pre><p><em class="parameter"><code>This
+        example will display three random images from the album with an id of
+        12 and center the images. Since this example includes a title caption,
+        the images will display vertically.</code></em></p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2455636"></a>itemId and block types</h2></div></div></div><p>All mg2 tags must specify an itemId. This itemId can refer to an
+      image ID or an album ID. Image IDs are only used when the specificImage
+      block type is selected. All other blocks use an album ID. If you try to
+      use an image id with an album-type image block, mGallery2 will return an
+      error instead of an image.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2455652"></a>Escaping mg2 tags</h2></div></div></div><p>If you want to put mg2 tags somewhere in your site without having
+      them processed (e.g. - a tutorial) just begin the tag with a doble
+      bracket.</p><pre class="programlisting">[[mg2:12 type=randomImage]</pre></div></div><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a name="chG2mage"></a>Chapter 4. Using g2Image with mGallery2 and Scribite</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#g2ImageReqs">Requirements</a></span></dt><dt><span class="section"><a href="#g2ImageInstall">Install and configure g2image files</a></span></dt><dt><span class="section"><a href="#chOpenBasedir">g2Image and OpenBasedir</a></span></dt><dt><span class="section"><a href="#id2456186">Updating Scribite</a></span></dt></dl></div><p>G2Image is a TimyMCE plugin that adds an icon to the TinyMCE
+    toolbar. The plugin allows a user to choose an image from a Gallery2
+    installation by browsing thumbnails. In this document, it will be set up
+    to insert tags which will be transformed by the mGallery2 transform hook
+    into image blocks. This chapter describes the steps that need to be taken
+    to get <a href="http://g2image.steffensenfamily.com/index.php?title=Main_Page" target="_top">g2Image</a>
+    working with TinyMCE within Scribite.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="g2ImageReqs"></a>Requirements</h2></div></div></div><p>To get this combination working, you will need several components
+      installed and working:</p><div class="itemizedlist"><ul type="disc"><li><p>Zikula .764 - download at <a href="http://www.Zikula.com/" target="_top">http://www.Zikula.com/</a></p></li><li><p>mGallery .02+ - download at <a href="http://code.zikula.org/mgallery2/" target="_top">http://code.zikula.org/mgallery2/</a></p></li><li><p>Scribite - download at <a href="http://code.zikula.org/scribite/" target="_top">http://code.zikula.org/scribite/</a></p></li><li><p>Scribite configured to use TinyMCE and hooked to the News
+          module</p></li><li><p>Download G2Image - <a href="http://g2image.steffensenfamily.com/index.php?title=Main_Page" target="_top">http://g2image.steffensenfamily.com/index.php?title=Main_Page</a></p></li></ul></div><p>You can find documentation to install each of these components at
+      their respective web sites or within the downloaded archive. The
+      installaton and configuration of G2Image will be described below.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="g2ImageInstall"></a>Install and configure g2image files</h2></div></div></div><p>The G2Image download archive contains two folders. The first is
+      <code class="filename">tinymce_plugin</code>, which is the one we're interested
+      in. The second is <code class="filename">wordpress_plugin</code>, which we will
+      ignore. Inside the <code class="filename">tinymce_plugin</code> folder is another
+      folder, <code class="filename">g2image</code>. This is the folder we will be
+      working with. To install:</p><div class="orderedlist"><ol type="1"><li><p>Copy the <code class="filename">g2image</code> folder into your
+          <code class="filename">modules/scribite/pnincludes/tiny_mce/plugins</code>
+          folder</p></li><li><p>Open the <code class="filename">g2image</code> folder</p></li><li><p>Open the config.php file</p></li><li><p>Go to line 56, which should read:</p><pre class="programlisting">$g2ic_default_alignment = 'none';</pre></li><li><p>Change the word <span class="emphasis"><em>none</em></span> to
+          <span class="emphasis"><em>left</em></span></p></li><li><p>Go to line 63. There should be four lines here defining custom
+          classes. All of them should be set to unused, like the one
+          below:</p><pre class="programlisting">$g2ic_custom_class_1 = 'not_used';</pre></li><li><p>Edit each of the four lines to define the following custom
+          classes:</p><pre class="programlisting">$g2ic_custom_class_1 = 'left';
+$g2ic_custom_class_2 = 'right';
+$g2ic_custom_class_3 = 'center';
+$g2ic_custom_class_4 = 'centre';</pre></li><li><p>Go to line 98, which should read:</p><pre class="programlisting">$g2ic_default_action = 'thumbnail_image';</pre></li><li><p>Edit the line to read:</p><pre class="programlisting">$g2ic_default_action = 'drupal_g2_filter';</pre></li><li><p>Go to line 121, which should read:</p><pre class="programlisting">$g2ic_embedded_mode = FALSE;</pre></li><li><p>Change the value to <span class="emphasis"><em>TRUE</em></span></p></li><li><p>Go to line 143, which should read:</p><pre class="programlisting">$g2ic_gallery2_uri = 'http://www.domain.com/gallery2/main.php';</pre></li><li><p>Change the value to your your Gallery2 URI, including the
+          main.php at the end</p></li><li><p>Go to line 159, which should read:</p><pre class="programlisting">$g2ic_drupal_g2_filter = FALSE;</pre></li><li><p>Change the value to <span class="emphasis"><em>TRUE</em></span></p></li><li><p>Go to line 163, which should read:</p><pre class="programlisting">$g2ic_drupal_g2_filter_prefix = G2;</pre></li><li><p>Change the value from <span class="emphasis"><em>G2</em></span> to
+          <span class="emphasis"><em>mg2</em></span></p></li><li><p>Save the file</p></li></ol></div><p>Because the Scribite module includes a version of TinyMCE with a
+      version number greater than 2.03, you need to copy the files in the
+      <code class="filename">g2image/TinyMCE_version_2.0.3_files</code> folder up to
+      the <code class="filename">g2image</code> folder, overwriting the ones that are
+      there. </p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="chOpenBasedir"></a>g2Image and OpenBasedir</h2></div></div></div><p>If you or your provider have activated the open_basedir
+      restriction in PHP, G2Image will work, but you will see lots of errors.
+      The G2Image code, as downloaded, tries to figure out if it is in a
+      WordPress installation by searching for wp-config.php somewhere in the
+      directory tree from its current location. As it climbs up the tree, it
+      eventually tries to leave the web root and generates these errors. You
+      can get rid of this functionality by editing the file
+      <code class="filename">modules/scribite/pnincludes/tiny_mce/plugins/g2image/init.php</code>.
+      There is a section in the code labeled WPG2 Validation. This section
+      needs to be removed. simply delete lines 23 through 137 in the
+      file.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id2456186"></a>Updating Scribite</h2></div></div></div><p>Before enabling the plugin in Scribite, Scribite needs to know
+      where to add the plugin's icon to the TinyMCE toolbar. This requires
+      more editing:</p><div class="orderedlist"><ol type="1"><li><p>Open the file
+          <code class="filename">modules/scribite/pntemplates/tinymce_editorheader.htm</code></p></li><li><p>Go to line 44, which should read:</p><pre class="programlisting">theme_advanced_buttons3_add : "emotions,iespell,media,advhr,separator,print,separator,ltr,rtl,separator,fullscreen",</pre></li><li><p>Add g2image at the end of the list, like this:</p><pre class="programlisting">theme_advanced_buttons3_add : "emotions,iespell,media,advhr,separator,print,separator,ltr,rtl,separator,fullscreen,g2image",</pre></li><li><p>Save the file</p></li></ol></div><p>Now that scribite knows how to add the icon to the plugin, you
+      must enable the plgin within Scribite. To do so:</p><div class="orderedlist"><ol type="1"><li><p>Go to your Zikula Administration Panel</p></li><li><p>Click on the <span class="emphasis"><em>3rd party</em></span> tab</p></li><li><p>Click on the Scribite icon</p></li><li><p>Click on the <span class="emphasis"><em>tiny_mce</em></span> settings tab</p></li><li><p>Find <span class="emphasis"><em>g2image</em></span> in the tiny_mce Plugins
+          section</p></li><li><p>Check the checkbox for <span class="emphasis"><em>g2image</em></span></p></li><li><p>Click <span class="emphasis"><em>Save Configuration</em></span></p></li></ol></div><p>To test, add a story in your News module. You should see the
+      g2image icon on the right side of the lowest toolbar in TinyMCE. The
+      screenshot below shows TinyMCE with the G2image icon.</p><div class="mediaobject"><img src="images/scribite-g2image-icon.jpg"></div></div></div><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a name="id2456337"></a>Chapter 5. Support</h2></div></div></div><p>mGallery2 is registered as a project in Cozi. Please visit us in Cozi and open tickets to report bugs and feature requests.</p>
+      <div class="itemizedlist"><ul type="disc"><li><p><span class="emphasis"><em>Home Page</em></span> - <a href="http://code.zikula.org/mgallery2/" target="_top">http://code.zikula.org/mgallery2</a></p></li><li><p><span class="emphasis"><em>Forums</em></span> - <a href="http://community.zikula.org/module-Forum.htm" target="_top">http://community.zikula.org/module-Forum.htm</a></p></li></ul></div></div></div></body></html>

@@ -1,0 +1,1 @@
+mGallery2 was originally built for Postnuke .764 and slight changes were made to keep it working for Zikula. The files here were taken from a live Zikula 1.2.7 site running mGallery2 to bridge to Gallery 2.3.2. There are many parts of the integration that do not work. 
