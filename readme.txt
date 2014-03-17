@@ -7,14 +7,14 @@ mGallery2 was originally built for Postnuke .726 in 2005 and changes were made t
 Helpful information and history.
 
 Forum thread at 
-http://gallery.menalto.com/Postnuke_G2 has history of development on Gallery/Postnuke integration.
+http://galleryproject.org/Postnuke_G2 has history of development on Gallery/Postnuke integration.
 
 Gallery 2 Wiki Developer Starter Kit
-http://codex.gallery2.org/Gallery2:Developer_Starterkit
+http://codex.galleryproject.org/Gallery2:Developer_Starterkit
 
 
 Gallery 2 API documentation
-http://gallery.menalto.com/apidoc/index.html
+http://galleryproject.org/apidoc/index.html
 
 Zikula API documentation
 http://community.zikula.org/index.php?module=Wiki&tag=ZikulaAPI
